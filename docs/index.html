@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>同花顺助手 使用文档</title>
+  <style>
+    :root {
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --accent: #0f766e;
+      --code-bg: #f3f4f6;
+      --sidebar-w: 220px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+      min-height: 100vh;
+    }
+    nav {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      padding: 20px 16px;
+    }
+    nav h1 {
+      font-size: 1.05rem;
+      margin: 0 0 12px;
+      color: var(--accent);
+    }
+    nav a {
+      display: block;
+      color: var(--text);
+      text-decoration: none;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 0.92rem;
+    }
+    nav a:hover { background: var(--code-bg); }
+    nav .group { margin-top: 14px; }
+    nav .group-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      margin: 0 0 6px 8px;
+    }
+    main {
+      justify-self: center;
+      width: min(50vw, 100%);
+      max-width: 100%;
+      padding: 28px 36px 64px;
+      box-sizing: border-box;
+    }
+    section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 18px;
+    }
+    h2 {
+      margin: 0 0 12px;
+      font-size: 1.35rem;
+      scroll-margin-top: 16px;
+    }
+    h3 {
+      margin: 20px 0 8px;
+      font-size: 1.05rem;
+      scroll-margin-top: 16px;
+    }
+    p, li { color: var(--text); }
+    .muted { color: var(--muted); }
+    code, pre {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.9rem;
+    }
+    code {
+      background: var(--code-bg);
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      overflow: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 4px;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th { background: #f9fafb; }
+    .note {
+      border-left: 3px solid var(--accent);
+      padding: 8px 12px;
+      background: #f0fdfa;
+      margin: 12px 0;
+    }
+    .steps {
+      counter-reset: step;
+      list-style: none;
+      padding: 0;
+      margin: 12px 0 0;
+    }
+    .steps li {
+      counter-increment: step;
+      position: relative;
+      padding: 10px 12px 10px 44px;
+      margin-bottom: 8px;
+      background: #f9fafb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: 12px;
+      top: 10px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      line-height: 22px;
+      text-align: center;
+    }
+    .index-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .index-link:hover { text-decoration: underline; }
+    .screenshot {
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 12px 0 4px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+    .shot-caption {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 0 0 16px;
+    }
+    nav a.active-section { background: #e6f2f6; color: var(--accent); font-weight: 600; }
+    .playground {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 12px 0;
+      background: #fafafa;
+    }
+    .playground label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .playground input[type="text"],
+    .playground select,
+    .playground textarea {
+      width: 100%;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.88rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 8px;
+      background: var(--panel);
+      color: var(--text);
+    }
+    .playground textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+    .playground .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .playground .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0;
+    }
+    .playground button {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+    .playground button.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    .playground button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+    .playground .log {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      min-height: 120px;
+      max-height: 320px;
+      overflow: auto;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 0.82rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .playground .status {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 6px 0 0;
+    }
+    @media (max-width: 800px) {
+      .playground .row { grid-template-columns: 1fr; }
+      .layout { grid-template-columns: 1fr; }
+      nav {
+        position: relative;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      main {
+        justify-self: stretch;
+        width: 100%;
+        padding: 20px 16px 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav>
+      <h1>同花顺助手</h1>
+      <p class="muted" style="margin:0 0 12px;font-size:0.85rem;">同花顺本地联动 · 使用说明与接口</p>
+
+      <div class="group">
+        <div class="group-title">入门</div>
+        <a href="#quickstart">快速开始</a>
+        <a href="#guide-index">我想…</a>
+        <a href="#monitor">监控页</a>
+        <a href="#shell-tray">托盘与悬浮窗</a>
+        <a href="#upgrade">软件升级</a>
+      </div>
+      <div class="group">
+        <div class="group-title">配置</div>
+        <a href="#config">设置项说明</a>
+        <a href="#auth">接口鉴权</a>
+        <a href="#ws-multi">多实例说明</a>
+      </div>
+      <div class="group">
+        <div class="group-title">WebSocket</div>
+        <a href="#ws-overview">说明与地址</a>
+        <a href="#ws-push">推送消息</a>
+        <a href="#ws-trade-push">仓位变化推送</a>
+        <a href="#ws-commands">客户端指令</a>
+        <a href="#ws-cmd-ths-block">板块指令</a>
+        <a href="#ws-cmd-trade">交易指令</a>
+        <a href="#ws-cmd-risk-control">风控设置</a>
+      </div>
+      <div class="group">
+        <div class="group-title">HTTP</div>
+        <a href="#http-overview">说明与地址</a>
+        <a href="#http-endpoints">接口一览</a>
+        <a href="#http-ths-block">板块接口</a>
+        <a href="#http-tdx-block">通达信板块</a>
+        <a href="#http-trade">交易接口</a>
+        <a href="#http-risk-control">风控接口</a>
+      </div>
+      <div class="group">
+        <div class="group-title">工具</div>
+        <a href="#playground">接口测试</a>
+      </div>
+    </nav>
+
+    <main>
+      <section id="quickstart">
+        <h2>快速开始</h2>
+        <p>默认以 <strong>Desktop Shell + Web UI</strong> 启动（主界面、托盘与悬浮窗）。默认配置即可使用，<strong>无需先改设置</strong>。按下面步骤操作：</p>
+        <ol class="steps">
+          <li>启动<strong>同花顺官方最新版</strong>客户端，保持至少一个窗口打开（默认内存读码不支持第三方客户端）。</li>
+          <li>启动<strong>同花顺助手</strong>（本软件）。</li>
+          <li>在顶部导航打开「<strong>监控</strong>」页，从左侧选中同花顺安装路径；在右侧勾选「监听」「发送」和/或「买卖条」。</li>
+          <li>点击窗口底部状态栏<strong>「启动」</strong>（运行中可点「重新启动」）。</li>
+        </ol>
+        <div class="note">
+          启动后，勾选「监听」的实例会显示当前股票代码；切换个股后代码会自动更新。默认以内存方式读取当前股票，需使用官方最新版同花顺，不支持第三方客户端；读码失败时可在实例详情「股票代码获取」改为「日志」，或按界面引导做偏移恢复。若需让外部程序接收变化或跳转股票，见下方 <a class="index-link" href="#guide-index">「我想…」</a> 按需配置。关闭主窗口默认进入<strong>系统托盘</strong>，不会退出进程。
+        </div>
+        <img class="screenshot" src="assets/初始化状态.png" alt="初始化状态：暂无同花顺实例时的引导" />
+        <p class="shot-caption">初始化状态：首次启动且暂未检测到同花顺实例时，界面会给出联动引导。</p>
+        <p class="muted">软件内可随时点击「检查环境」、设置页「快速上手」，或托盘菜单复查步骤是否就绪。</p>
+      </section>
+
+      <section id="guide-index">
+        <h2>我想…</h2>
+        <p>按目标查找操作位置，仅在需要时修改对应设置。</p>
+        <table>
+          <thead>
+            <tr><th>我想…</th><th>怎么做</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>在软件里看到当前选中的股票</td>
+              <td>「监控」→ 勾选「监听」→ 状态栏点「启动」。默认即可，无需改设置。</td>
+            </tr>
+            <tr>
+              <td>从本软件向同花顺发送股票代码</td>
+              <td>勾选「发送」→ 在「监控」页填写代码并发送；或启用 WebSocket 后由外部程序调用（见 <a class="index-link" href="#ws-overview">WebSocket</a>）。</td>
+            </tr>
+            <tr>
+              <td>让外部程序接收股票变化 / 跳转个股</td>
+              <td>「设置 → 实时推送」勾选「启用实时推送」→ 点「启动」→ 见 <a class="index-link" href="#ws-overview">WebSocket 说明</a>。未配置 <code>http_api_key</code> 时可无 token 连接；配置后见 <a class="index-link" href="#auth">接口鉴权</a>。</td>
+            </tr>
+            <tr>
+              <td>读写自选股、调用 HTTP 接口</td>
+              <td>「设置 → HTTP 接口」勾选启用 →（可选）配置 <code>http_api_key</code>（见 <a class="index-link" href="#auth">鉴权</a>）→ 见 <a class="index-link" href="#http-overview">HTTP 说明</a>。写入自选股在实例「自选股」页配置云端账号。Pro 功能。</td>
+            </tr>
+            <tr>
+              <td>查询板块 / 热点主题 / 匹配个股所属板块</td>
+              <td>「订阅」激活 Pro 后，选中实例打开「板块」标签：可刷新缓存、导出 JSON、查看「匹配板块」。也可经 HTTP / WebSocket 查询（见 <a class="index-link" href="#http-ths-block">板块接口</a>）。完整字段见仓库 <code>docs/同花顺板块列表接口.md</code>、<code>docs/同花顺热点主题接口.md</code>。</td>
+            </tr>
+            <tr>
+              <td>向自定义板块添加成分股</td>
+              <td>先在同花顺客户端<strong>新建</strong>自定义板块（至少含 1 只股票），再在「板块」标签点「添加成分股…」，或调用 HTTP / WS <code>add_stocks</code>。仅支持已有板块追加/覆盖成分，不支持新建 / 删除 / 重命名。写入后请在同花顺中刷新或重启后再查看。</td>
+            </tr>
+            <tr>
+              <td>与通达信自定义板块双向同步</td>
+              <td>「板块」→「通达信同步」：填写通达信目录、配置名称映射后整表覆盖同步板块；亦支持「我的自选」与通达信自选股双向整表同步。亦可调用 <a class="index-link" href="#http-tdx-block">通达信板块接口</a>。</td>
+            </tr>
+            <tr>
+              <td>显示买卖悬浮条 / 下单窗</td>
+              <td>实例勾选「买卖条」，或托盘「显示买卖条」。买入/卖出打开独立置顶悬浮窗，主窗在托盘时仍可下单。详见 <a class="index-link" href="#shell-tray">托盘与悬浮窗</a>。</td>
+            </tr>
+            <tr>
+              <td>查看交易日历</td>
+              <td>顶部导航「日历」页；亦可经 HTTP <code>/calendar/month</code>、<code>/calendar/day</code> 查询。</td>
+            </tr>
+            <tr>
+              <td>导出短线精灵配置</td>
+              <td>选中实例 →「配置管理」标签 → 导出 Excel 或 JSON。也可经 HTTP <code>/short-genius/*</code> 或 WebSocket <code>short_genius</code> 只读查询。</td>
+            </tr>
+            <tr>
+              <td>查询 A 股静态股票列表</td>
+              <td>启用 HTTP / WebSocket 后调用 <code>/ths-stock-list</code> 或 <code>ths_stock_list</code>（无需单独板块授权）。详见 <code>docs/同花顺股票列表接口.md</code>。</td>
+            </tr>
+            <tr>
+              <td>调整股票读取速度 / 方式</td>
+              <td>「设置 → 基本配置」或实例「股票代码获取」：间隔默认 0.3 秒；连接类型默认「内存」，可改「日志」。</td>
+            </tr>
+            <tr>
+              <td>修改 WebSocket / HTTP 端口</td>
+              <td>「设置 → 实时推送 / HTTP 接口」→ 启用后修改端口并复制链接地址。</td>
+            </tr>
+            <tr>
+              <td>配置自选股云端写入账号</td>
+              <td>「监控」选中实例 →「自选股」→ 填写账号或 Cookie 并探测；依赖缺失时到「设置 → 自选股依赖」安装。</td>
+            </tr>
+            <tr>
+              <td>设置风控关闭密码</td>
+              <td>「设置 → 风控密码」。</td>
+            </tr>
+            <tr>
+              <td>开机自动打开本软件</td>
+              <td>「设置 → 基本配置」→ 勾选开机自启。</td>
+            </tr>
+            <tr>
+              <td>激活 Pro（HTTP / 交易 / 板块等）</td>
+              <td>「订阅」页输入激活码或 Mock 购买。WebSocket 股票推送/改码在源码侧为免费能力，仍须在设置中启用并启动。</td>
+            </tr>
+            <tr>
+              <td>同目录开了多个同花顺窗口，代码一样？</td>
+              <td>见 <a class="index-link" href="#ws-multi">多实例说明</a>。默认内存方式按窗口独立读码；日志方式按安装目录共享。</td>
+            </tr>
+            <tr>
+              <td>内存方式读不到当前股票？</td>
+              <td>仅支持官方最新版同花顺。请升级客户端；按界面「偏移恢复」引导重找指针链；或改为「日志」方式。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="monitor">
+        <h2>监控页</h2>
+        <p>顶部导航「监控」用于选择同花顺实例、控制监听/发送/买卖条，并在底部状态栏启动联动服务。另有「设置」「订阅」「日历」页。</p>
+        <table>
+          <thead>
+            <tr><th>区域 / 操作</th><th>说明</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>左侧路径列表</td>
+              <td>本机检测到的同花顺安装目录；选中后右侧显示该实例详情与标签页。</td>
+            </tr>
+            <tr>
+              <td>监听</td>
+              <td>勾选后读取当前股票并在界面显示；所属目录的变化可经 WebSocket 推送（需已启用实时推送）。</td>
+            </tr>
+            <tr>
+              <td>发送</td>
+              <td>勾选后，本软件或 WebSocket <code>target: "all"</code> 可向该实例跳转股票。</td>
+            </tr>
+            <tr>
+              <td>买卖条</td>
+              <td>勾选后显示买卖悬浮条（账户与当前股票、买入/卖出入口）；托盘亦可「显示买卖条」。</td>
+            </tr>
+            <tr>
+              <td>状态栏「启动」/「停止」</td>
+              <td>启动后开始读取当前股票（默认内存，可改为日志）。若已在设置中启用 WebSocket / HTTP，会一并启动对应服务。运行中可「重新启动」。</td>
+            </tr>
+            <tr>
+              <td>发送股票代码</td>
+              <td>测试区：填写代码后发送到全部「发送」实例或当前选中实例（需已启用 WebSocket 并启动）。</td>
+            </tr>
+            <tr>
+              <td>「交易」标签</td>
+              <td>刷新账户、复制 JSON、买入 / 卖出、配置实例级风控（需 Pro；下单经 easyths / xiadan）。风控设置含「风控规则」「买卖提示」两个标签；风控拦截时弹出独立告警悬浮窗。</td>
+            </tr>
+            <tr>
+              <td>「自选股」标签</td>
+              <td>查看与编辑本地/云端自选股：单只添加 / 删除、整表替换、整表恢复、复制列表 / 复制 JSON（写入需 Pro + 云端认证 + ths-favorite）。</td>
+            </tr>
+            <tr>
+              <td>「股票代码获取」标签</td>
+              <td>全局读码方式（内存 / 日志）与间隔；可打开实例目录或日志目录。</td>
+            </tr>
+            <tr>
+              <td>「配置管理」标签</td>
+              <td>导出短线精灵配置为 Excel / JSON（只读）。</td>
+            </tr>
+            <tr>
+              <td>「板块」标签 / 匹配板块</td>
+              <td>Pro：刷新本地缓存、按类型导出 JSON、向<strong>已有</strong>自定义板块「添加成分股」、与通达信板块 / 自选双向同步。匹配结果在实例详情顶部「匹配板块」展示；导出 / 匹配类型可单独勾选（含「热点主题」）。</td>
+            </tr>
+          </tbody>
+        </table>
+        <img class="screenshot" src="assets/监控界面+交易界面.png" alt="监控页与交易标签" />
+        <p class="shot-caption">监控页：左侧选同花顺实例，顶部控制监听 / 发送 / 买卖条，「交易」标签查账户与持仓。</p>
+        <img class="screenshot" src="assets/交易-风控设置.png" alt="交易风控设置对话框" />
+        <p class="shot-caption">交易风控设置对话框（「交易」标签 → 编辑规则）：含「风控规则」与「买卖提示」两个标签。</p>
+        <img class="screenshot" src="assets/板块管理界面.png" alt="板块管理界面" />
+        <p class="shot-caption">板块标签：本地板块按类型统计、导出 / 匹配个股勾选，以及与通达信的板块、自选双向同步。</p>
+        <img class="screenshot" src="assets/自选股界面.png" alt="自选股界面" />
+        <p class="shot-caption">自选股标签：云端账号配置、单只添加、整表替换与整表恢复，列表可复制。</p>
+        <img class="screenshot" src="assets/交易日历.png" alt="交易日历页" />
+        <p class="shot-caption">交易日历页（顶部导航「日历」）：标注交易日、休市与出金日。</p>
+      </section>
+
+      <section id="shell-tray">
+        <h2>托盘与悬浮窗</h2>
+        <p>关闭主窗口默认进入系统托盘，进程继续运行。托盘右键菜单：</p>
+        <ul>
+          <li><strong>打开主界面</strong> — 恢复主窗口</li>
+          <li><strong>设置</strong> — 打开设置页</li>
+          <li><strong>检查环境</strong> — 进入设置并触发环境检查</li>
+          <li><strong>检查更新</strong> — 手动检查新版本并立即安装（见「<a class="index-link" href="#upgrade">软件升级</a>」）</li>
+          <li><strong>显示买卖条</strong> — 打开买卖悬浮条</li>
+          <li><strong>退出</strong> — 真正退出进程（主窗关闭≠退出）</li>
+        </ul>
+        <p>以下为独立于主窗口的<strong>置顶悬浮窗</strong>（可拖拽、位置可记忆），主窗在托盘时仍可用：</p>
+        <table>
+          <thead><tr><th>悬浮窗</th><th>用途</th></tr></thead>
+          <tbody>
+            <tr><td>买卖条</td><td>账户摘要与当前股票；买入/卖出入口</td></tr>
+            <tr><td>委托窗</td><td>买入/卖出限价委托表单</td></tr>
+            <tr><td>风控告警</td><td>展示风控拦截/确认信息，尽量不把主程序拉到前台</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="upgrade">
+        <h2>软件升级</h2>
+        <p>本软件支持<strong>在线自动升级</strong>：检测到新版本后自动下载并完成安装替换，<strong>无需重新安装、无需手动解压覆盖</strong>。安装包通过 <code>sha256</code> 完整性校验后才会应用；升级过程会自动重启软件以完成替换。</p>
+        <div class="note">
+          <strong>日常使用速览</strong>：① 启动同花顺官方最新版并保持窗口打开 → ② 启动同花顺助手 → ③ 「监控」页勾选「监听 / 发送」并点状态栏「启动」→ ④ 关闭主窗口进入系统托盘（进程继续运行）→ ⑤ 有新版本时在托盘点「<strong>检查更新</strong>」即可升级。各功能细节见「<a class="index-link" href="#guide-index">我想…</a>」「<a class="index-link" href="#monitor">监控页</a>」「<a class="index-link" href="#shell-tray">托盘与悬浮窗</a>」。
+        </div>
+        <h3>升级方式</h3>
+        <ul>
+          <li><strong>自动检查</strong> — 启动后约 4 秒在后台静默检查一次；发现新版本会弹出提示，确认后自动下载、安装并重启。可在配置中关闭（见下）。</li>
+          <li><strong>手动检查</strong> — 托盘右键菜单 →「<strong>检查更新</strong>」，立即检查并提示结果。</li>
+        </ul>
+        <h3>升级流程</h3>
+        <ol class="steps">
+          <li>按序探测<strong>多个更新源</strong>（GitHub Pages 清单、GitHub Releases API，以及你自行配置的镜像源），任一源不可达或内容无效会自动跳过并尝试下一个；在可用源中取<strong>版本号最高</strong>的版本。</li>
+          <li>流式下载新安装包，校验 <code>sha256</code> 与发布清单一致后落盘（完整性校验；数字签名暂未启用）。</li>
+          <li>软件自动退出并<strong>自替换</strong>：用新安装包覆盖自身路径后按原方式重新启动，全程无需安装器。</li>
+          <li>若升级中断（如关机、断电），下次启动时会自动恢复并完成安装。</li>
+        </ol>
+        <h3>配置更新源（可选）</h3>
+        <p>默认配置开箱即用。如需自建国内镜像或调整顺序，编辑用户目录 <code>~/.ths-linker/linker_config.json</code> 的 <code>update</code> 段：</p>
+        <pre>{
+  "update": {
+    "sources": [
+      {
+        "name": "mirror",
+        "kind": "generic",
+        "latest_url": "https://mirror.example.com/ths-linker/latest.json",
+        "enabled": true
+      },
+      {
+        "name": "github-pages",
+        "kind": "generic",
+        "latest_url": "https://awamwang.github.io/ths-linker-releases/latest.json",
+        "enabled": true
+      },
+      {
+        "name": "github-api",
+        "kind": "github",
+        "latest_url": "https://api.github.com/repos/awamwang/ths-linker-releases/releases/latest",
+        "enabled": true
+      }
+    ],
+    "check_on_startup": true,
+    "check_timeout": 6
+  }
+}</pre>
+        <ul>
+          <li><code>sources</code> — 按数组顺序探测；<code>kind</code> 为 <code>generic</code>（解析 <code>latest.json</code> 清单）或 <code>github</code>（解析 GitHub Releases API）；<code>enabled: false</code> 可临时停用某源。配置非法或缺项时整体回退到内置默认源。</li>
+          <li><code>check_on_startup</code> — 启动时是否静默检查（默认 <code>true</code>）。</li>
+          <li><code>check_timeout</code> — 单个源探测超时秒数（默认 6）。</li>
+        </ul>
+        <div class="note">
+          以源码方式运行（非打包 exe）时仅支持 <code>update check</code> 命令行检查，不执行自替换安装；只有正式发布版支持一键升级。
+        </div>
+      </section>
+
+      <section id="config">
+        <h2>设置项说明</h2>
+        <p>在「设置」页按左侧分类修改；点「应用并保存」后立即生效并持久化到用户目录 <code>~/.ths-linker/linker_config.json</code>。首次使用可保持默认，按 <a class="index-link" href="#guide-index">「我想…」</a> 按需调整。</p>
+        <table>
+          <thead>
+            <tr><th>分类 / 项</th><th>说明</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>快速上手</td>
+              <td>首次引导步骤与「检查环境」；可随时复查是否就绪。</td>
+            </tr>
+            <tr>
+              <td>基本配置（监听与发送）</td>
+              <td>监听轮询与连接方式：读取间隔（默认 0.3 秒）、连接类型（默认「内存」读 hexin.exe，可改「日志」轮询 HexinHttp）、按键精灵买卖按键与输入间隔、开机自启。内存偏移保存在 <code>~/.ths-linker/memory_offset.json</code>。</td>
+            </tr>
+            <tr>
+              <td>实时推送（WebSocket）</td>
+              <td>勾选「启用实时推送」后显示端口与链接，默认 <code>ws://127.0.0.1:8765</code>。监听模式：本机 / 局域网 / 自定义 IP（与 HTTP 共用）。</td>
+            </tr>
+            <tr>
+              <td>HTTP 接口</td>
+              <td>勾选「启用 HTTP 接口」后显示端口与地址，默认 <code>http://127.0.0.1:8766</code>（Pro）。<code>http_api_key</code> 可选；未配置时第三方可无 token 调用（见 <a class="index-link" href="#auth">接口鉴权</a>）。</td>
+            </tr>
+            <tr>
+              <td>风控密码</td>
+              <td>关闭或放宽实例级风控时需要的全局密码。</td>
+            </tr>
+            <tr>
+              <td>自选股依赖</td>
+              <td>查看 / 安装 ths-favorite（写入「我的自选」所需）。</td>
+            </tr>
+            <tr>
+              <td>本机路径与环境</td>
+              <td>检查环境；打开文档、配置文件、偏移文件等本地路径。</td>
+            </tr>
+          </tbody>
+        </table>
+        <img class="screenshot" src="assets/设置-实时推送.png" alt="设置-实时推送" />
+        <p class="shot-caption">设置 → 实时推送：WebSocket 开关、端口、监听模式与链接地址。</p>
+        <img class="screenshot" src="assets/设置-环境检查.png" alt="设置-本机路径与环境" />
+        <p class="shot-caption">设置 → 本机路径与环境：逐项检查运行环境，标红项为未通过。</p>
+      </section>
+
+      <section id="auth">
+        <h2>接口鉴权</h2>
+        <p>集成密钥 <code>http_api_key</code> <strong>不是必须的</strong>：界面未配置时，启动服务后第三方可无 token 连接 WebSocket / 调用业务 HTTP。若在设置中写入了密钥，则对外对接须带凭证。Web UI 的 Control Plane（设置 / 运行时等）仍使用进程级会话令牌，与对外集成密钥相互独立。</p>
+        <table>
+          <thead><tr><th>项</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>公开路径</td>
+              <td><code>GET /health</code> 与静态文档/Web UI 资源免鉴权。</td>
+            </tr>
+            <tr>
+              <td>会话令牌 <code>session_token</code></td>
+              <td>进程内存生成，经 Shell Bridge 注入 Web UI，保护 Control Plane（<code>/settings</code>、<code>/runtime</code> 等）。外部无法稳定获取；<strong>不</strong>单独用来锁死对外业务 HTTP / WebSocket。</td>
+            </tr>
+            <tr>
+              <td>集成密钥 <code>http_api_key</code>（可选）</td>
+              <td>在设置或 <code>~/.ths-linker/linker_config.json</code> 写入后生效。配置后：业务 HTTP 用 <code>Authorization: Bearer &lt;http_api_key&gt;</code>；WebSocket 用 <code>?token=</code> 或 Bearer。HTTP 业务接口另需 Pro（<code>FEATURE_HTTP_API</code>）。</td>
+            </tr>
+            <tr>
+              <td>WebSocket / 业务 HTTP</td>
+              <td><strong>未配置</strong> <code>http_api_key</code>：可无 token 连接与调用。<strong>已配置</strong>：握手/请求须带凭证（session 或集成密钥均可）。集成密钥握手不额外强制 Pro；各消息仍按功能授权门控。</td>
+            </tr>
+            <tr>
+              <td>失败响应</td>
+              <td>HTTP <strong>401</strong>：<code>{"ok":false,"error":"…","auth_required":true}</code>；集成密钥缺 Pro 时可能另含 <code>license_required:true</code>。</td>
+            </tr>
+          </tbody>
+        </table>
+        <pre># 未配置 http_api_key 时可直接调用
+curl http://127.0.0.1:8766/stock-code/get
+ws://127.0.0.1:8765
+
+# 配置了 http_api_key 后须带凭证
+curl -H "Authorization: Bearer YOUR_HTTP_API_KEY" http://127.0.0.1:8766/stock-code/get
+ws://127.0.0.1:8765/?token=YOUR_HTTP_API_KEY</pre>
+        <div class="note">业务 License（交易 / 自选写入 / 板块等）与本鉴权正交：通过鉴权后仍可能因未激活 Pro 返回 <code>license_required</code>。</div>
+      </section>
+
+      <section id="ws-overview">
+        <h2>WebSocket 说明与地址</h2>
+        <div class="note">
+          本节描述的是本软件对外暴露的<strong>公共联动能力</strong>（本机 WebSocket 接口），供你自己的脚本、网页或其它程序对接使用。若需与软件深度集成、定制开发或商业合作，请联系开发者：<a href="mailto:wm.keepgoing@gmail.com">wm.keepgoing@gmail.com</a>。
+        </div>
+        <p>使用前：「设置 → 实时推送」勾选「启用实时推送」→ 状态栏点击「启动」。默认地址：</p>
+        <pre>ws://127.0.0.1:8765</pre>
+        <p>未配置 <code>http_api_key</code> 时可直接连接 <code>ws://127.0.0.1:8765</code>；已配置时请使用 <code>ws://127.0.0.1:8765/?token=YOUR_KEY</code> 或握手携带 <code>Authorization: Bearer …</code>（见 <a class="index-link" href="#auth">接口鉴权</a>）。</p>
+        <p>消息均为 <strong>JSON 文本帧</strong>。连接成功后服务端会先推送 <code>stock_code</code>（<code>action: get</code>），再推送各安装目录缓存的 <code>stock_code</code>（<code>action: push</code>，若有），若该实例已有本地持仓缓存则再推送 <code>trade</code>（<code>action: push</code>）。运行中若同花顺实例身份变化（PID / 窗口标题 / 安装路径），会额外推送 <code>instances</code>（<code>action: push</code>）。</p>
+        <p class="muted">端口与地址可在「设置 → 实时推送」中查看、修改并复制。股票推送/改码在源码侧为免费能力；交易、自选写入、板块等仍按 Pro 门控。</p>
+      </section>
+
+      <section id="ws-push">
+        <h2>推送消息（服务端 → 客户端）</h2>
+
+        <h3 id="ws-stock-code-push"><code>stock_code</code>（<code>action: push</code>）— 股票变化推送</h3>
+        <pre>{
+  "type": "stock_code",
+  "action": "push",
+  "ths_dir": "C:\\同花顺",
+  "code": "600519",
+  "market_id": "17",
+  "symbol": "600519.SH",
+  "instances": [
+    {
+      "id": "12345",
+      "pid": 12345,
+      "hwnd": 67890,
+      "title": "同花顺",
+      "ths_dir": "C:\\同花顺",
+      "listen": true,
+      "send": true
+    }
+  ]
+}</pre>
+        <table>
+          <thead><tr><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td><code>ths_dir</code></td><td>产生该日志的安装目录（已 normalize）。</td></tr>
+            <tr><td><code>code</code> / <code>market_id</code> / <code>symbol</code></td><td>当前股票。</td></tr>
+            <tr><td><code>instances</code></td><td>该目录下关联的同花顺实例列表；同目录多开时共享同一套代码。每项可含 <code>listen</code> / <code>send</code>。</td></tr>
+          </tbody>
+        </table>
+
+        <h3 id="ws-instances-push"><code>instances</code>（<code>action: push</code>）— 实例变化推送</h3>
+        <p>默认约每 <strong>10 秒</strong>扫描一次同花顺实例；在启动/重新启动、环境检查、发送、交易等关键节点也会立即刷新。仅当实例身份真实变化（PID、窗口标题、安装路径增删改）时主动推送；仅 hwnd 变化或界面「监听/发送」勾选变更不会推送本事件。</p>
+        <pre>{
+  "type": "instances",
+  "action": "push",
+  "instances": [
+    {
+      "id": "12345",
+      "pid": 12345,
+      "hwnd": 67890,
+      "title": "同花顺",
+      "ths_dir": "C:\\同花顺",
+      "listen": true,
+      "send": true
+    }
+  ]
+}</pre>
+        <table>
+          <thead><tr><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td><code>instances</code></td><td>当前运行中的同花顺实例完整列表（含 <code>listen</code> / <code>send</code>）。</td></tr>
+          </tbody>
+        </table>
+
+        <h3 id="ws-trade-push"><code>trade</code>（<code>action: push</code>）— 仓位变化推送</h3>
+        <p>WebSocket 运行后，按实例轮询本地持仓快照文件（<code>trading_snapshots</code>），默认每 <strong>10 秒</strong>比对 <code>snapshot</code> 内容（忽略仅 <code>refreshed_at</code> 变化、持仓行顺序变化）。内容真正变化时主动推送；新连接也会推送当前已缓存的持仓。</p>
+        <pre>{
+  "type": "trade",
+  "action": "push",
+  "ths_dir": "C:\\同花顺",
+  "refreshed_at": "2026-08-24 10:00:00",
+  "holdings": [
+    {
+      "code": "600519",
+      "name": "贵州茅台",
+      "shares": 100,
+      "available_shares": 100,
+      "cost": 1400.0,
+      "price": 1800.0,
+      "pnl": 40000.0,
+      "market_value": 180000.0
+    }
+  ],
+  "snapshot": {
+    "equity": 1000000.0,
+    "available": 200000.0,
+    "stock_market_value": 180000.0,
+    "holdings": []
+  },
+  "instances": [
+    {
+      "id": "12345",
+      "pid": 12345,
+      "hwnd": 67890,
+      "title": "同花顺",
+      "ths_dir": "C:\\同花顺"
+    }
+  ]
+}</pre>
+        <table>
+          <thead><tr><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td><code>ths_dir</code></td><td>对应同花顺安装目录（已 normalize）。</td></tr>
+            <tr><td><code>holdings</code></td><td>当前持仓列表，与 <code>snapshot.holdings</code> 一致。</td></tr>
+            <tr><td><code>snapshot</code></td><td>账户资金与持仓标准 JSON；文件删除后可能为 <code>null</code>。</td></tr>
+            <tr><td><code>refreshed_at</code></td><td>本地缓存写入时间（若有）。</td></tr>
+            <tr><td><code>instances</code></td><td>该目录下关联的同花顺实例。</td></tr>
+          </tbody>
+        </table>
+
+        <h3 id="ws-stock-code-get"><code>stock_code</code>（<code>action: get</code>）— 实例快照</h3>
+        <p>在连接时推送；也可由客户端 <code>stock_code</code> <code>action: get</code> 主动请求。实例身份变化请监听 <code>instances</code> <code>action: push</code>。</p>
+        <pre>{
+  "type": "stock_code",
+  "action": "get",
+  "instances": [
+    {
+      "id": "12345",
+      "pid": 12345,
+      "hwnd": 67890,
+      "title": "同花顺",
+      "ths_dir": "C:\\同花顺",
+      "listen": true,
+      "send": true
+    }
+  ],
+  "stocks": {
+    "C:\\同花顺": {
+      "code": "600519",
+      "market_id": "17",
+      "symbol": "600519.SH"
+    }
+  }
+}</pre>
+        <table>
+          <thead><tr><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td><code>listen</code></td><td>界面是否勾选「监听」；未监听的目录变化不会推送 <code>push</code>。</td></tr>
+            <tr><td><code>send</code></td><td>界面是否勾选「发送」；影响 <code>post</code> 的 <code>target: "all"</code>。</td></tr>
+          </tbody>
+        </table>
+
+        <h3 id="ws-stock-code-result"><code>stock_code_result</code> — 查询/跳转结果</h3>
+        <pre>{
+  "type": "stock_code_result",
+  "action": "post",
+  "ok": true,
+  "code": "600519",
+  "targets": [
+    { "id": "12345", "ok": true, "method": "message" }
+  ]
+}</pre>
+        <p><code>action: get</code> 时含 <code>instances</code>、<code>stocks</code>；<code>action: post</code> 时含 <code>code</code>、<code>targets</code>。失败时可能带顶层 <code>error</code>，或在 <code>targets[].error</code> 中说明单个实例失败原因。</p>
+
+        <h3 id="ws-self-stock-result"><code>self_stock_result</code> — 自选股操作结果</h3>
+        <p>响应 <code>self_stock</code> 指令；字段与 HTTP 自选股 API 一致，并额外包含 <code>type</code>、<code>action</code>。</p>
+        <pre>{
+  "type": "self_stock_result",
+  "action": "list",
+  "ok": true,
+  "count": 1,
+  "items": [
+    {
+      "code": "600519",
+      "market_id": "17",
+      "symbol": "600519.SH",
+      "price": 1800.5,
+      "added_at": "20260819"
+    }
+  ]
+}</pre>
+
+        <h3 id="ws-trade-result"><code>trade_result</code> — 交易操作结果</h3>
+        <p>响应 <code>trade</code> 指令；字段与 HTTP 交易 API 一致，并额外包含 <code>type</code>、<code>action</code>。</p>
+        <pre>{
+  "type": "trade_result",
+  "action": "probe",
+  "ok": true,
+  "xiadan_path": "C:\\同花顺\\xiadan.exe",
+  "server_host": "127.0.0.1",
+  "server_port": 7648,
+  "server_reachable": true,
+  "server_message": "ok"
+}</pre>
+        <p><code>action: snapshot</code> 时额外含 <code>snapshot</code>（账户资金与持仓标准 JSON）；<code>funds</code> / <code>holdings</code> 含对应字段；<code>buy</code> / <code>sell</code> 含 <code>code</code>、<code>price</code>、<code>quantity</code>、<code>result</code>。服务端主动推送仓位变化时为 <code>type: trade</code> + <code>action: push</code>（见上方推送消息），不是 <code>trade_result</code>。</p>
+
+        <h3 id="ws-risk-control-result"><code>risk_control_result</code> — 风控配置结果</h3>
+        <p>响应 <code>risk_control</code> 指令；字段与 HTTP 风控 API 一致，并额外包含 <code>type</code>、<code>action</code>。</p>
+        <pre>{
+  "type": "risk_control_result",
+  "action": "get",
+  "ok": true,
+  "settings": {
+    "version": 1,
+    "enabled": true,
+    "total_position_limit_pct": 20.0,
+    "single_stock_limit_pct": 5.0,
+    "market_prompts": ["市场谨慎"],
+    "stock_buy_prompts": ["勿追高"],
+    "sell_prompts": ["按计划止盈"],
+    "sell_block_prompts": [],
+    "stock_sell_prompts": {},
+    "stock_sell_block_prompts": {},
+    "watch_enabled": true,
+    "watch_interval_sec": 10.0,
+    "xiadan_risk_unrestricted": false,
+    "xiadan_block_order_popups": false,
+    "global_no_buy": false,
+    "global_no_buy_reason": "",
+    "global_no_buy_meta": {},
+    "buy_tips": [],
+    "sell_tips": [],
+    "trade_tips_enabled": true
+  },
+  "path": "C:\\Users\\...\\risk_control\\abc123.json",
+  "ths_dir": "C:\\同花顺",
+  "title": "同花顺(普通)"
+}</pre>
+
+        <h3 id="ws-ths-block-result"><code>ths_block_result</code> — 板块操作结果</h3>
+        <p>响应 <code>ths_block</code> 指令；字段与 HTTP 板块 API 一致，并额外包含 <code>type</code>、<code>action</code>。</p>
+        <pre>{
+  "type": "ths_block_result",
+  "action": "list",
+  "ok": true,
+  "kind": "custom",
+  "kind_label": "自定义板块",
+  "count": 1,
+  "blocks": {
+    "278": {
+      "name": "ABF",
+      "custom_type": "static",
+      "stock_ids": ["603186"]
+    }
+  }
+}</pre>
+        <p><code>action: tree</code> 时含层级 <code>tree</code>；<code>action: add_stocks</code> 时含 <code>block_id</code>、<code>before_count</code> / <code>after_count</code>、<code>stock_ids</code>、<code>skipped_codes</code> 等。热点主题对应 <code>ths_theme_result</code>；A 股列表对应 <code>ths_stock_list_result</code>。</p>
+      </section>
+
+      <section id="ws-commands">
+        <h2>客户端指令（客户端 → 服务端）</h2>
+
+        <h3 id="ws-cmd-stock-code"><code>stock_code</code> — 股票代码联动</h3>
+        <p>与 HTTP <code>/stock-code/*</code> 一一对应。获取当前股票代码用 <code>get</code>，跳转用 <code>post</code>。</p>
+        <pre>// 刷新实例与当前股票
+{ "type": "stock_code", "action": "get" }
+
+// 全部「发送」勾选实例
+{ "type": "stock_code", "action": "post", "code": "600519", "target": "all" }
+
+// 指定实例（id 为 pid 字符串，不受发送勾选拦截）
+{ "type": "stock_code", "action": "post", "code": "000001", "target": "12345" }</pre>
+        <table>
+          <thead><tr><th>字段</th><th>必填</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td><code>action</code></td><td>是</td><td><code>get</code> / <code>post</code></td></tr>
+            <tr><td><code>code</code></td><td>post 时</td><td>股票代码，支持 <code>600519</code> / <code>SH600519</code> / <code>600519.SH</code>。</td></tr>
+            <tr><td><code>target</code></td><td>否</td><td><code>all</code>（默认，仅勾选「发送」的实例）或实例 <code>id</code>（pid）。</td></tr>
+          </tbody>
+        </table>
+        <p>服务端回复 <code>stock_code_result</code>；<code>post</code> 在后台线程执行。</p>
+
+        <h3 id="ws-cmd-self-stock"><code>self_stock</code> — 自选股读写</h3>
+        <p>与 HTTP 自选股 API 等价；读本地 <code>SelfStockInfo.json</code>，写经 ths-favorite。字段与 HTTP 请求体相同，通过 <code>action</code> 区分操作。</p>
+        <pre>// 列出「我的自选」
+{ "type": "self_stock", "action": "list" }
+
+// 指定安装目录或 JSON 路径（可选）
+{ "type": "self_stock", "action": "list", "ths_dir": "C:\\同花顺" }
+{ "type": "self_stock", "action": "list", "path": "D:\\data\\SelfStockInfo.json" }
+
+// 添加 / 删除
+{ "type": "self_stock", "action": "add", "code": "600519" }
+{ "type": "self_stock", "action": "remove", "code": "300750" }
+
+// 整表覆盖（空数组表示清空）
+{ "type": "self_stock", "action": "replace", "codes": ["600519", "000001"] }</pre>
+        <table>
+          <thead><tr><th>字段</th><th>必填</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td><code>action</code></td><td>是</td><td><code>list</code> / <code>add</code> / <code>remove</code> / <code>replace</code></td></tr>
+            <tr><td><code>code</code></td><td>add/remove 时</td><td>6 位股票代码；可选 <code>market_id</code></td></tr>
+            <tr><td><code>codes</code></td><td>replace 时</td><td>代码数组；可选 <code>market_ids</code></td></tr>
+            <tr><td><code>ths_dir</code> / <code>path</code></td><td>否</td><td>读取时指定目录或 JSON 路径</td></tr>
+            <tr><td><code>username</code> / <code>password</code> / <code>cookies</code></td><td>否</td><td>写入时的云端认证；可覆盖 GUI 配置</td></tr>
+          </tbody>
+        </table>
+        <p>服务端回复 <code>self_stock_result</code>；写入在后台线程执行，不会阻塞其他消息。</p>
+
+        <h3 id="ws-cmd-ths-block"><code>ths_block</code> — 板块查询与成分写入</h3>
+        <p>与 HTTP <code>/ths-block/*</code> 等价。读取本地板块映射 / 层级树；可向<strong>已有</strong>自定义板块追加或覆盖成分股。需 Pro（板块能力）。</p>
+        <pre>// 列出自定义板块
+{ "type": "ths_block", "action": "list", "kind": "custom" }
+
+// 概念层级树（仅 conception / industry / region）
+{ "type": "ths_block", "action": "tree", "kind": "conception" }
+
+// 向已有自定义板块追加成分（默认去重追加）
+{
+  "type": "ths_block",
+  "action": "add_stocks",
+  "block_name": "ABF",
+  "items": [
+    { "kind": "hit", "code": "600519" },
+    { "kind": "hit", "code": "000001" }
+  ]
+}
+
+// 覆盖模式（清空后写入）
+{
+  "type": "ths_block",
+  "action": "add_stocks",
+  "block_name": "ABF",
+  "overwrite": true,
+  "items": [{ "kind": "hit", "code": "600519" }]
+}</pre>
+        <table>
+          <thead><tr><th>字段</th><th>必填</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td><code>action</code></td><td>是</td><td><code>list</code> / <code>tree</code> / <code>add_stocks</code>（别名 <code>add-stocks</code>）</td></tr>
+            <tr><td><code>kind</code></td><td>list/tree 时</td><td><code>custom</code> / <code>conception</code> / <code>industry</code> / <code>region</code> / <code>daily</code>（及中文别名）；tree 仅前三者中的概念/行业/地域</td></tr>
+            <tr><td><code>block_name</code></td><td>add_stocks 时</td><td>自定义板块显示名（完全匹配）；板块须已在同花顺客户端创建</td></tr>
+            <tr><td><code>items</code></td><td>add_stocks 时</td><td>hit-list：<code>kind:"hit"</code> + <code>code</code>；兼容旧字段 <code>stocks</code>；仅 A 股，无法映射的进入 <code>skipped_codes</code></td></tr>
+            <tr><td><code>overwrite</code></td><td>否</td><td><code>true</code> 覆盖成分，默认 <code>false</code> 追加去重</td></tr>
+            <tr><td><code>ths_dir</code></td><td>否</td><td>同花顺安装目录；省略时用服务配置或运行中的 hexin</td></tr>
+          </tbody>
+        </table>
+        <p>服务端回复 <code>ths_block_result</code>。写入后请在同花顺客户端刷新或重启再查看。<strong>不支持</strong>新建 / 删除 / 重命名板块。</p>
+        <p class="muted">以下指令与 HTTP 对应；完整字段见仓库 <code>docs/同花顺热点主题接口.md</code>、<code>docs/同花顺股票列表接口.md</code>。</p>
+
+        <h3 id="ws-cmd-ths-theme"><code>ths_theme</code> — 热点主题（Pro）</h3>
+        <pre>{ "type": "ths_theme", "action": "list" }
+{ "type": "ths_theme", "action": "full", "theme_key": "光模块/CPO" }
+{ "type": "ths_theme", "action": "stocks", "theme_key": "光模块/CPO", "block_code": "B097" }</pre>
+        <p><code>action</code>：<code>list</code> / <code>tree</code> / <code>stocks</code> / <code>full</code>。回复 <code>ths_theme_result</code>。</p>
+
+        <h3 id="ws-cmd-ths-stock-list"><code>ths_stock_list</code> — A 股静态列表</h3>
+        <pre>{ "type": "ths_stock_list", "action": "list", "ths_dir": "C:\\同花顺" }</pre>
+        <p>回复 <code>ths_stock_list_result</code>（WS 侧免费）。</p>
+
+        <h3 id="ws-cmd-short-genius"><code>short_genius</code> — 短线精灵配置（只读）</h3>
+        <pre>{ "type": "short_genius", "action": "config" }
+{ "type": "short_genius", "action": "accounts" }
+{ "type": "short_genius", "action": "excel" }</pre>
+        <p>回复 <code>short_genius_result</code>。</p>
+
+        <h3 id="ws-cmd-trade"><code>trade</code> — 交易查询与下单</h3>
+        <p>经 easyths 服务操作 <code>xiadan.exe</code>。需 Pro 与本机交易依赖（easyths / xiadan 已登录）。除 <code>probe</code> 外，其余操作通常需指定 <code>ths_dir</code>（同花顺安装目录）。</p>
+        <pre>// 探测 xiadan 路径与 easyths 连通性
+{ "type": "trade", "action": "probe" }
+
+// 账户快照（资金 + 持仓 + 账户元信息）
+{ "type": "trade", "action": "snapshot", "ths_dir": "C:\\同花顺" }
+
+// 仅查资金 / 持仓
+{ "type": "trade", "action": "funds", "ths_dir": "C:\\同花顺" }
+{ "type": "trade", "action": "holdings", "ths_dir": "C:\\同花顺" }
+
+// 剪贴板读写自检（持仓查询依赖 Ctrl+C 复制）
+{ "type": "trade", "action": "clipboard_check", "ths_dir": "C:\\同花顺" }
+
+// 限价买入 / 卖出
+{
+  "type": "trade",
+  "action": "buy",
+  "ths_dir": "C:\\同花顺",
+  "code": "600519",
+  "price": 1800.0,
+  "quantity": 100
+}</pre>
+        <table>
+          <thead><tr><th>字段</th><th>必填</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td><code>action</code></td><td>是</td><td><code>probe</code> / <code>snapshot</code> / <code>funds</code> / <code>holdings</code> / <code>clipboard_check</code> / <code>buy</code> / <code>sell</code></td></tr>
+            <tr><td><code>ths_dir</code></td><td>除 probe 外通常必填</td><td>同花顺安装目录，用于定位 xiadan</td></tr>
+            <tr><td><code>code</code> / <code>price</code> / <code>quantity</code></td><td>buy/sell 时</td><td>6 位代码、限价、股数（须 &gt; 0）</td></tr>
+            <tr><td><code>host</code> / <code>port</code> / <code>api_key</code> / <code>timeout</code></td><td>否</td><td>覆盖全局 easyths 连接参数；<code>port</code> 也可按实例 <code>trade_port</code> 解析</td></tr>
+            <tr><td><code>pid</code> / <code>hwnd</code> / <code>xiadan_path</code></td><td>否</td><td>精确定位交易窗口或 xiadan 可执行文件</td></tr>
+          </tbody>
+        </table>
+        <p>服务端回复 <code>trade_result</code>；查询与下单在后台线程执行。持仓查询通过 Ctrl+C 复制表格，若失败请检查 Quicker 等工具是否拦截快捷键，并确认 xiadan 在「查询→资金股票/资金股份」或「双向委托→持仓」页面且窗口在前台。</p>
+
+        <h3 id="ws-cmd-risk-control"><code>risk_control</code> — 风控配置读写</h3>
+        <p>读写实例级风控配置（仓位上限、提示词、文件监听等），与「监控 → 交易」页风控设置共用配置文件。按 <code>ths_dir</code> + 可选 <code>title</code> / <code>pid</code> 定位实例；关闭风控、以及<strong>放宽</strong>风控（上调总仓 / 单票上限、取消「限制同花顺下单」、取消「屏蔽同花顺买卖弹框」、关闭「全局禁止买入」）均需提供「设置 → 风控密码」中配置的全局 <code>password</code>。</p>
+        <pre>// 读取当前配置
+{ "type": "risk_control", "action": "get", "ths_dir": "C:\\同花顺", "title": "同花顺(普通)" }
+
+// 部分更新（未传字段保持原值）
+{
+  "type": "risk_control",
+  "action": "update",
+  "ths_dir": "C:\\同花顺",
+  "total_position_limit_pct": 25.0,
+  "stock_buy_prompts": ["勿追高", "禁止梭哈"]
+}
+
+// 开启风控（无需密码）
+{ "type": "risk_control", "action": "enable", "ths_dir": "C:\\同花顺" }
+
+// 关闭风控（需 password）
+{ "type": "risk_control", "action": "disable", "ths_dir": "C:\\同花顺", "password": "你的关闭密码" }</pre>
+        <table>
+          <thead><tr><th>字段</th><th>必填</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td><code>action</code></td><td>是</td><td><code>get</code> / <code>update</code> / <code>enable</code> / <code>disable</code></td></tr>
+            <tr><td><code>ths_dir</code></td><td>通常必填</td><td>同花顺安装目录，用于定位实例级配置</td></tr>
+            <tr><td><code>title</code> / <code>pid</code></td><td>否</td><td>同目录多实例时区分配置；未指定时按保存的实例列表首条匹配</td></tr>
+            <tr><td><code>enabled</code></td><td>update 时可选</td><td>设为 <code>false</code> 时须同时提供 <code>password</code></td></tr>
+            <tr><td><code>password</code></td><td>disable 或放宽 / 关闭时</td><td>全局风控关闭密码（在「设置 → 风控密码」配置）；关闭风控或放宽风控时须提供</td></tr>
+            <tr><td><code>total_position_limit_pct</code> / <code>single_stock_limit_pct</code></td><td>否</td><td>总仓 / 单票仓位上限（0–100，百分比）</td></tr>
+            <tr><td><code>market_prompts</code> / <code>stock_buy_prompts</code> / <code>sell_prompts</code></td><td>否</td><td>提示词数组；买入拦截时展示市场 + 单票提示，卖出时在结果中带卖出提示</td></tr>
+            <tr><td><code>sell_block_prompts</code> / <code>stock_sell_prompts</code> / <code>stock_sell_block_prompts</code></td><td>否</td><td>卖出相关：全局卖出禁止（拦截）、单票卖出提示（不拦截）、单票卖出禁止（拦截）；单票格式 <code>代码: 提示1,提示2</code></td></tr>
+            <tr><td><code>xiadan_risk_unrestricted</code></td><td>否</td><td>本实例不拦截 / 提示同花顺 xiadan 买卖面板；对应界面「风控限制同花顺下单」，取消勾选即置 <code>true</code></td></tr>
+            <tr><td><code>xiadan_block_order_popups</code></td><td>否</td><td>屏蔽同花顺买卖浮层弹框（检测到买卖浮层立即关闭，默认关）</td></tr>
+            <tr><td><code>buy_tips</code> / <code>sell_tips</code></td><td>否</td><td>原生买卖前逐条确认的提示（条目 <code>{text, enabled}</code>，可空）；受 <code>trade_tips_enabled</code> 总开关控制</td></tr>
+            <tr><td><code>trade_tips_enabled</code></td><td>否</td><td>买卖提示总开关，独立于风控规则开关</td></tr>
+            <tr><td><code>global_no_buy</code></td><td>否</td><td>全局禁止买入；开启后拦截全部买入，优先级高于仓位上限与买入提示词</td></tr>
+            <tr><td><code>global_no_buy_reason</code></td><td>否</td><td>命中全局禁买时优先展示的原因；为空时默认「全局禁止买入」</td></tr>
+            <tr><td><code>global_no_buy_meta</code></td><td>否</td><td>object 额外信息；拦截时出现在交易结果 <code>risk.meta</code></td></tr>
+            <tr><td><code>watch_enabled</code> / <code>watch_interval_sec</code></td><td>否</td><td>是否监听配置文件变更及轮询周期（秒，≥1）</td></tr>
+          </tbody>
+        </table>
+        <p>服务端回复 <code>risk_control_result</code>；写操作在后台线程执行。成功时含 <code>settings</code>、配置文件 <code>path</code>。</p>
+      </section>
+
+      <section id="ws-multi">
+        <h2>多实例说明</h2>
+        <ul>
+          <li><strong>界面</strong>：「监控」左侧为安装路径，选中后在右侧配置监听、发送、买卖条及详情标签。</li>
+          <li><strong>监听</strong>：勾选后该实例显示当前股票，且所属目录的变化可推送 WebSocket；未勾选时不推送。</li>
+          <li><strong>发送</strong>：<code>stock_code</code> <code>action: post</code> 且 <code>target: "all"</code> 时只写入勾选了「发送」的实例；也可在消息中指定实例 <code>id</code>（pid）定向跳转。</li>
+          <li><strong>读码粒度</strong>：默认<strong>内存</strong>方式按进程读取，同一安装目录下各窗口可显示各自选中的股票。改为<strong>日志</strong>后按安装目录共享读码，同目录多窗口会显示相同代码。</li>
+          <li><strong>内存方式限制</strong>：仅支持官方最新版同花顺客户端，不支持第三方客户端。读码失败请升级官方客户端、按引导做偏移恢复，或改为日志方式。</li>
+          <li><strong>日志方式限制</strong>：无法区分同目录各窗口各自选中的股票；若你开了多个同花顺窗口且代码总一样，属正常现象。</li>
+        </ul>
+      </section>
+
+      <section id="http-overview">
+        <h2>HTTP 说明与地址</h2>
+        <div class="note">
+          本节描述的是本软件对外暴露的<strong>公共 HTTP API</strong>，供外部程序读写自选股、联动股票、查询交易与风控等。若需配合软件做定制开发或集成方案，请联系开发者：<a href="mailto:wm.keepgoing@gmail.com">wm.keepgoing@gmail.com</a>。
+        </div>
+        <p>使用前：「设置 → HTTP 接口」勾选启用 →（可选）配置 <code>http_api_key</code>（见鉴权）→ 状态栏点击「启动」。默认地址：</p>
+        <pre>http://127.0.0.1:8766</pre>
+        <p>默认绑定本机 <code>127.0.0.1</code>；可在设置中改为局域网（绑定 <code>0.0.0.0</code>）或自定义 IPv4。响应均为 JSON，字段含 <code>ok</code>；失败时带 <code>error</code>（可能含 <code>license_required</code> / <code>auth_required</code>）。支持 CORS。未配置 <code>http_api_key</code> 时业务接口可无 token 调用；已配置时须带 <code>Authorization: Bearer &lt;http_api_key&gt;</code>（见 <a class="index-link" href="#auth">接口鉴权</a>）。</p>
+        <ul>
+          <li><strong>自选股读取</strong>：本地 <code>SelfStockInfo.json</code>。</li>
+          <li><strong>自选股写入</strong>：经云端 API；在实例「自选股」页配置账号或 Cookie。</li>
+          <li><strong>板块</strong>：查询自定义 / 概念 / 行业 / 地域 / 每日动态；可向已有自定义板块写入成分股（Pro）。</li>
+          <li><strong>通达信板块</strong>：列出通达信自定义板块，并与同花顺自定义板块双向整表同步（Pro）。</li>
+          <li><strong>热点主题 / A 股列表 / 短线精灵</strong>：只读查询（主题与板块同 Pro；股票列表与短线精灵见各接口）。</li>
+          <li><strong>交易</strong>：经 easyths 操作 xiadan（需 Pro 与本机交易依赖）。</li>
+          <li><strong>风控</strong>：读写实例级交易风控配置，与界面风控设置共用文件。</li>
+        </ul>
+        <p class="muted">启服 HTTP 需 Pro。WebSocket 股票联动在源码侧免费，但界面仍须勾选启用。接口调试可使用本文底部 <a class="index-link" href="#playground">接口测试</a>（若已配置 API Key 请填写）。</p>
+      </section>
+
+      <section id="http-endpoints">
+        <h2>HTTP 接口一览</h2>
+        <p>下列为对外集成常用路由。未配置 <code>http_api_key</code> 时可直接调用；已配置时须带 <code>Authorization: Bearer &lt;http_api_key&gt;</code>。Web UI 另使用 Control Plane 路由（<code>/settings</code>、<code>/runtime</code>、<code>/license</code>、<code>/instances</code>、<code>/shell</code>、<code>/calendar</code>、<code>/offset-recovery</code>、<code>/risk-password</code> 等），一般不必由外部脚本直接调用。</p>
+        <table>
+          <thead><tr><th>方法</th><th>路径</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td><code>GET</code></td><td><code>/health</code></td><td>健康检查（免鉴权）；<code>features</code> 含 stock_code / ths_block / tdx_block / ths_theme / ths_stock_list / short_genius / self_stock / trade / risk_control 等</td></tr>
+            <tr><td><code>GET</code></td><td><code>/stock-code</code>、<code>/stock-code/get</code></td><td>获取实例列表与各目录当前股票（对应 WS <code>stock_code</code> <code>action: get</code>）</td></tr>
+            <tr><td><code>POST</code></td><td><code>/stock-code</code>、<code>/stock-code/post</code></td><td>跳转股票代码；body: <code>{"code":"600519","target":"all"}</code></td></tr>
+            <tr><td><code>GET</code></td><td><code>/self-stock</code>、<code>/self-stock/list</code></td><td>列出「我的自选」；可选查询参数 <code>ths_dir</code>、<code>path</code></td></tr>
+            <tr><td><code>GET</code> / <code>POST</code></td><td><code>/self-stock/probe</code></td><td>探测云端自选认证</td></tr>
+            <tr><td><code>POST</code></td><td><code>/self-stock/add</code></td><td>添加单只；body: <code>{"code":"600519"}</code></td></tr>
+            <tr><td><code>POST</code></td><td><code>/self-stock/remove</code></td><td>删除单只；body 同上</td></tr>
+            <tr><td><code>POST</code></td><td><code>/self-stock/replace</code></td><td>整表覆盖；body: <code>{"codes":["600519","000001"]}</code>（空数组表示清空）</td></tr>
+            <tr><td><code>GET</code></td><td><code>/self-stock/history</code></td><td>自选股历史版本列表（供整表恢复）</td></tr>
+            <tr><td><code>POST</code></td><td><code>/self-stock/restore</code></td><td>整表恢复为指定历史版本；body: <code>{"id":"…"}</code></td></tr>
+            <tr><td><code>GET</code></td><td><code>/ths-block</code>、<code>/ths-block/list</code></td><td>扁平板块映射；查询参数 <code>kind</code>（必填）、可选 <code>ths_dir</code></td></tr>
+            <tr><td><code>GET</code></td><td><code>/ths-block/tree</code></td><td>概念 / 行业 / 地域层级树</td></tr>
+            <tr><td><code>GET</code> / <code>POST</code></td><td><code>/ths-block/export</code>、<code>/ths-block/refresh</code>、<code>/ths-block/status</code>、<code>/ths-block/match</code></td><td>导出（可选类型含「热点主题」）、刷新缓存、状态、个股匹配板块</td></tr>
+            <tr><td><code>POST</code></td><td><code>/ths-block/add-stocks</code></td><td>向已有自定义板块追加/覆盖成分；body 见 <a class="index-link" href="#http-ths-block">板块接口</a></td></tr>
+            <tr><td><code>GET</code></td><td><code>/tdx-block</code>、<code>/tdx-block/list</code></td><td>列出通达信自定义板块；见 <a class="index-link" href="#http-tdx-block">通达信板块</a></td></tr>
+            <tr><td><code>POST</code></td><td><code>/tdx-block/sync-to-ths</code>、<code>/tdx-block/sync-to-tdx</code></td><td>通达信 ↔ 同花顺自定义板块整表同步</td></tr>
+            <tr><td><code>GET</code> / <code>POST</code></td><td><code>/tdx-block/self-stock-status</code></td><td>通达信自选股同步状态（计数）</td></tr>
+            <tr><td><code>POST</code></td><td><code>/tdx-block/sync-self-to-tdx</code></td><td>同花顺「我的自选」整表覆盖写入通达信自选股（<code>zxg.blk</code>）</td></tr>
+            <tr><td><code>POST</code></td><td><code>/tdx-block/sync-self-from-tdx</code>（别名 <code>/sync-self-to-ths</code>）</td><td>通达信自选股整表覆盖写入同花顺「我的自选」（需云端账号）</td></tr>
+            <tr><td><code>GET</code></td><td><code>/ths-theme</code>、<code>/ths-theme/list</code>、<code>/ths-theme/tree</code>、<code>/ths-theme/stocks</code>、<code>/ths-theme/full</code></td><td>热点主题只读查询（Pro）；详见 <code>docs/同花顺热点主题接口.md</code></td></tr>
+            <tr><td><code>GET</code></td><td><code>/ths-stock-list</code>、<code>/ths-stock-list/list</code></td><td>A 股静态代码/名称列表；详见 <code>docs/同花顺股票列表接口.md</code></td></tr>
+            <tr><td><code>GET</code></td><td><code>/short-genius</code>、<code>/short-genius/config</code>、<code>/short-genius/accounts</code>、<code>/short-genius/excel</code></td><td>短线精灵配置只读</td></tr>
+            <tr><td><code>GET</code></td><td><code>/trade/probe</code></td><td>探测 xiadan 与 easyths 连通性</td></tr>
+            <tr><td><code>GET</code></td><td><code>/trade/snapshot</code>、<code>/trade/funds</code>、<code>/trade/holdings</code>、<code>/trade/clipboard-check</code></td><td>账户快照 / 资金 / 持仓 / 剪贴板自检；通常需 <code>ths_dir</code></td></tr>
+            <tr><td><code>GET</code> / <code>POST</code></td><td><code>/trade/prepare</code>、<code>/trade/ensure</code>、<code>/trade/recover</code></td><td>交易准备、确保服务、端口恢复</td></tr>
+            <tr><td><code>POST</code></td><td><code>/trade/buy</code>、<code>/trade/sell</code></td><td>限价买入/卖出；body 含 <code>ths_dir</code>、<code>code</code>、<code>price</code>、<code>quantity</code></td></tr>
+            <tr><td><code>GET</code></td><td><code>/risk-control</code>、<code>/risk-control/get</code></td><td>读取风控配置；查询参数 <code>ths_dir</code>、可选 <code>title</code> / <code>pid</code></td></tr>
+            <tr><td><code>POST</code></td><td><code>/risk-control/update</code>、<code>/enable</code>、<code>/disable</code></td><td>更新 / 开启 / 关闭风控；关闭须 <code>password</code></td></tr>
+            <tr><td><code>GET</code></td><td><code>/calendar/month</code>、<code>/calendar/day</code></td><td>交易日历（月视图 / 日详情）</td></tr>
+          </tbody>
+        </table>
+        <p><code>Content-Type</code> 须为 <code>application/json</code>。写入还可附带可选 <code>market_id</code>、<code>username</code>、<code>password</code>、<code>cookies</code>。</p>
+        <h3>列表示例响应</h3>
+        <pre>{
+  "ok": true,
+  "count": 1,
+  "items": [
+    {
+      "code": "600519",
+      "market_id": "17",
+      "symbol": "600519.SH",
+      "price": 1800.5,
+      "added_at": "20260819"
+    }
+  ]
+}</pre>
+      </section>
+
+      <section id="http-ths-block">
+        <h2>HTTP 板块接口</h2>
+        <p>与 WebSocket <code>ths_block</code> 共用实现。需已启用 HTTP API，且具备 Pro 板块授权。完整字段与示例见仓库 <code>docs/同花顺板块列表接口.md</code>。</p>
+
+        <h3>查询 <code>list</code> / <code>tree</code></h3>
+        <pre>GET /ths-block/list?kind=custom
+GET /ths-block/tree?kind=conception</pre>
+        <table>
+          <thead><tr><th>参数</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td><code>kind</code></td><td>必填。<code>custom</code> / <code>conception</code> / <code>industry</code> / <code>region</code> / <code>daily</code>（支持中文别名）。tree 仅支持概念 / 行业 / 地域</td></tr>
+            <tr><td><code>ths_dir</code></td><td>可选；同花顺安装根目录</td></tr>
+          </tbody>
+        </table>
+        <p><code>list</code> 返回 <code>blocks</code>（ID → 名称 / <code>stock_ids</code> 等）；自定义板块还可含 <code>custom_type</code>、颜色字段。<code>tree</code> 返回递归 <code>tree</code> 节点。</p>
+
+        <h3>写入成分 <code>add-stocks</code></h3>
+        <p>仅更新<strong>已有</strong>自定义板块文件中的成分列表；板块须先在同花顺客户端创建（至少含 1 只股票）。不支持新建 / 删除 / 重命名。</p>
+        <pre>POST /ths-block/add-stocks
+Content-Type: application/json
+
+{
+  "block_name": "ABF",
+  "overwrite": false,
+  "items": [
+    { "kind": "hit", "code": "600519" },
+    { "kind": "hit", "code": "000001" }
+  ]
+}</pre>
+        <table>
+          <thead><tr><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td><code>block_name</code></td><td>自定义板块显示名（完全匹配）</td></tr>
+            <tr><td><code>items</code></td><td>hit-list：写入 <code>kind:"hit"</code> 项的 <code>code</code>；标题行等跳过。兼容旧字段 <code>stocks</code></td></tr>
+            <tr><td><code>overwrite</code></td><td>默认 <code>false</code> 追加去重；<code>true</code> 清空后覆盖</td></tr>
+            <tr><td><code>ths_dir</code></td><td>可选</td></tr>
+          </tbody>
+        </table>
+        <p>成功响应含 <code>block_id</code>、<code>before_count</code> / <code>after_count</code>、<code>added_count</code>、<code>stock_ids</code>、<code>skipped_codes</code> 等。写入后请在同花顺中刷新或重启后再查看。</p>
+        <div class="note">「板块」标签提供相同能力：刷新缓存、导出 JSON、「添加成分股…」、通达信同步。写入会改动本地自定义板块文件，测试时请谨慎。</div>
+      </section>
+
+      <section id="http-tdx-block">
+        <h2>HTTP 通达信板块接口</h2>
+        <p>列出通达信自定义板块，并按名称映射与同花顺自定义板块做<strong>整表覆盖</strong>同步（Pro）；另支持与同花顺<strong>自选股</strong>双向整表覆盖同步。同步前请先在同花顺侧创建目标自定义板块（自选同步写入同花顺侧时需已配置云端账号）。</p>
+        <pre>GET /tdx-block/list?tdx_dir=D:\new_tdx
+
+POST /tdx-block/sync-to-ths
+Content-Type: application/json
+
+{
+  "tdx_dir": "D:\\new_tdx",
+  "ths_dir": "C:\\同花顺",
+  "mappings": [
+    { "tdx_name": "我的板块", "ths_name": "ABF" }
+  ]
+}
+
+POST /tdx-block/sync-to-tdx
+Content-Type: application/json
+
+{
+  "tdx_dir": "D:\\new_tdx",
+  "ths_dir": "C:\\同花顺",
+  "mappings": [
+    { "tdx_name": "我的板块", "ths_name": "ABF" }
+  ]
+}</pre>
+        <table>
+          <thead><tr><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td><code>tdx_dir</code></td><td>通达信安装根目录（含 <code>T0002/blocknew</code> 等）</td></tr>
+            <tr><td><code>ths_dir</code></td><td>同花顺安装根目录</td></tr>
+            <tr><td><code>mappings</code></td><td>名称映射数组；亦可省略而使用已保存的配置映射</td></tr>
+          </tbody>
+        </table>
+        <h3>自选股同步</h3>
+        <p>同花顺「我的自选」与通达信自选股（<code>zxg.blk</code>）可双向<strong>整表覆盖</strong>同步；写入同花顺侧需已配置云端账号。</p>
+        <pre>GET /tdx-block/self-stock-status?ths_dir=C:\同花顺
+
+POST /tdx-block/sync-self-to-tdx
+Content-Type: application/json
+
+{
+  "tdx_dir": "D:\\new_tdx",
+  "ths_dir": "C:\\同花顺"
+}
+
+POST /tdx-block/sync-self-from-tdx
+Content-Type: application/json
+
+{
+  "tdx_dir": "D:\\new_tdx",
+  "ths_dir": "C:\\同花顺"
+}</pre>
+        <div class="note">界面路径：「监控 → 板块 → 通达信同步」（含 通达信板块→同花顺 / 同花顺板块→通达信 / 同花顺自选→通达信 / 通达信自选→同花顺）。映射会写入配置并自动保存。自选同步为整表覆盖，测试时请谨慎。</div>
+      </section>
+
+      <section id="http-trade">
+        <h2>HTTP 交易接口</h2>
+        <p>与 WebSocket <code>trade</code> 指令共用 <code>trading/api.py</code>。GET 接口通过查询参数传参；POST 买入/卖出使用 JSON body。</p>
+        <h3>公共可选参数</h3>
+        <table>
+          <thead><tr><th>参数</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td><code>ths_dir</code></td><td>同花顺安装目录（<code>snapshot</code> / <code>funds</code> / <code>holdings</code> / 买卖必填）</td></tr>
+            <tr><td><code>host</code> / <code>port</code> / <code>api_key</code> / <code>timeout</code></td><td>覆盖 GUI 全局 easyths 连接；未指定 <code>port</code> 时按实例 <code>trade_port</code> 解析</td></tr>
+            <tr><td><code>pid</code> / <code>hwnd</code> / <code>xiadan_path</code></td><td>精确定位 hexin / xiadan 窗口或可执行文件</td></tr>
+          </tbody>
+        </table>
+        <h3>账户快照 <code>snapshot</code></h3>
+        <p>标准 <code>snapshot</code> 字段示例：</p>
+        <pre>{
+  "broker": "某某证券",
+  "account_name": "资金账号",
+  "account_display": "资金账号",
+  "equity": 1000000.0,
+  "cash_balance": 500000.0,
+  "available": 480000.0,
+  "withdrawable": 480000.0,
+  "frozen": 0.0,
+  "stock_market_value": 500000.0,
+  "position_pnl": 12000.0,
+  "daily_pnl": 800.0,
+  "daily_pnl_pct": 0.08,
+  "holdings": [
+    {
+      "code": "600519",
+      "name": "贵州茅台",
+      "shares": 100,
+      "available_shares": 100,
+      "cost": 1700.0,
+      "price": 1800.0,
+      "pnl": 10000.0,
+      "market_value": 180000.0
+    }
+  ]
+}</pre>
+        <h3>探测响应 <code>probe</code></h3>
+        <pre>{
+  "ok": true,
+  "action": "probe",
+  "xiadan_path": "C:\\同花顺\\xiadan.exe",
+  "server_host": "127.0.0.1",
+  "server_port": 7648,
+  "server_reachable": true,
+  "server_message": "ok",
+  "hexin": { "id": "12345", "pid": 12345, "hwnd": 67890, "title": "同花顺", "ths_dir": "C:\\同花顺" },
+  "xiadan": { "pid": 23456, "hwnd": 78901, "path": "C:\\同花顺\\xiadan.exe" }
+}</pre>
+        <div class="note">买卖为真实下单，测试时请用小数量并在模拟环境验证；easyths 服务未启动时返回 <code>自动交易服务不可达</code>。</div>
+      </section>
+
+      <section id="http-risk-control">
+        <h2>HTTP 风控接口</h2>
+        <p>与 WebSocket <code>risk_control</code> 指令共用 <code>trading/risk_api.py</code>。读取用 GET 查询参数；更新 / 开启 / 关闭用 POST JSON body。</p>
+        <h3>配置字段 <code>settings</code></h3>
+        <table>
+          <thead><tr><th>字段</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td><code>enabled</code></td><td>是否启用风控</td></tr>
+            <tr><td><code>total_position_limit_pct</code></td><td>总仓位上限（占账户权益百分比，0–100）</td></tr>
+            <tr><td><code>single_stock_limit_pct</code></td><td>单票仓位上限（百分比）</td></tr>
+            <tr><td><code>market_prompts</code></td><td>市场风控提示词（买入被拦截时展示）</td></tr>
+            <tr><td><code>stock_buy_prompts</code></td><td>单票买入拦截提示词</td></tr>
+            <tr><td><code>sell_prompts</code></td><td>卖出提示词（全局，不拦截；出现在卖出 API 结果 <code>risk_prompts</code>）</td></tr>
+            <tr><td><code>sell_block_prompts</code></td><td>卖出禁止提示词（全局，拦截且不可跳过）</td></tr>
+            <tr><td><code>stock_sell_prompts</code></td><td>单票卖出提示词（不拦截）；格式 <code>代码: 提示1,提示2</code></td></tr>
+            <tr><td><code>stock_sell_block_prompts</code></td><td>单票卖出禁止提示词（拦截）</td></tr>
+            <tr><td><code>xiadan_risk_unrestricted</code></td><td>本实例不拦截 / 提示同花顺 xiadan 买卖面板（界面「风控限制同花顺下单」的取反）</td></tr>
+            <tr><td><code>xiadan_block_order_popups</code></td><td>屏蔽同花顺买卖浮层弹框（检测到立即关闭，默认关）</td></tr>
+            <tr><td><code>buy_tips</code> / <code>sell_tips</code></td><td>原生买卖前逐条确认的提示（<code>{text, enabled}</code>）；受 <code>trade_tips_enabled</code> 控制</td></tr>
+            <tr><td><code>trade_tips_enabled</code></td><td>买卖提示总开关，独立于风控规则开关</td></tr>
+            <tr><td><code>global_no_buy</code></td><td>全局禁止买入开关；开启后拦截全部买入，优先于仓位上限与买入提示词</td></tr>
+            <tr><td><code>global_no_buy_reason</code></td><td>命中全局禁买时优先展示的原因；为空时默认「全局禁止买入」</td></tr>
+            <tr><td><code>global_no_buy_meta</code></td><td>object 额外信息（如来源、分数）；买入被拦截时出现在 <code>risk.meta</code></td></tr>
+            <tr><td><code>watch_enabled</code> / <code>watch_interval_sec</code></td><td>配置文件热加载开关与轮询间隔</td></tr>
+          </tbody>
+        </table>
+        <h3>读取示例</h3>
+        <pre>GET /risk-control?ths_dir=C:\同花顺&amp;title=同花顺(普通)</pre>
+        <h3>更新示例</h3>
+        <pre>POST /risk-control/update
+Content-Type: application/json
+
+{
+  "ths_dir": "C:\\同花顺",
+  "title": "同花顺(普通)",
+  "total_position_limit_pct": 20.0,
+  "single_stock_limit_pct": 5.0,
+  "market_prompts": ["情绪低迷"],
+  "stock_buy_prompts": ["勿追高"],
+  "sell_prompts": ["按计划止盈"],
+  "global_no_buy": true,
+  "global_no_buy_reason": "指数大跌暂停买入",
+  "global_no_buy_meta": {"source": "strategy", "level": 2}
+}</pre>
+        <div class="note">关闭风控（<code>enabled: false</code> 或 <code>/risk-control/disable</code>）须先在「设置 → 风控密码」配置全局关闭密码，并在请求中提供 <code>password</code>。<strong>放宽</strong>风控（上调总仓 / 单票上限、取消「限制同花顺下单」、取消「屏蔽同花顺买卖弹框」、关闭「全局禁止买入」）同样需要 <code>password</code>。</div>
+      </section>
+
+      <section id="playground">
+        <h2>接口测试</h2>
+        <p>在软件已<strong>启动</strong>且对应服务已在「设置」中启用时，可直接在本页发起请求验证接口。HTTP 默认 <code>http://127.0.0.1:8766</code>，WebSocket 默认 <code>ws://127.0.0.1:8765</code>。仅当软件中配置了 <code>http_api_key</code> 时才需填写下方 API Key；未配置时可留空。</p>
+
+        <h3>HTTP 测试</h3>
+        <div class="playground" id="http-playground">
+          <div class="row">
+            <div>
+              <label for="http-base">根地址</label>
+              <input type="text" id="http-base" value="http://127.0.0.1:8766" />
+            </div>
+            <div>
+              <label for="http-preset">预设接口</label>
+              <select id="http-preset"></select>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="http-method">方法</label>
+              <select id="http-method">
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+              </select>
+            </div>
+            <div>
+              <label for="http-path">路径</label>
+              <input type="text" id="http-path" value="/health" />
+            </div>
+          </div>
+          <label for="http-token">API Key（Authorization: Bearer，可空）</label>
+          <input type="text" id="http-token" placeholder="仅当配置了 http_api_key 时填写" autocomplete="off" />
+          <label for="http-query">查询参数（GET，格式 key=value，多行）</label>
+          <textarea id="http-query" placeholder="ths_dir=C:\同花顺"></textarea>
+          <label for="http-body">JSON Body（POST）</label>
+          <textarea id="http-body" placeholder="{}"></textarea>
+          <div class="actions">
+            <button type="button" class="primary" id="http-send">发送请求</button>
+            <button type="button" id="http-clear">清空响应</button>
+          </div>
+          <div class="log" id="http-log">等待请求…</div>
+          <p class="status" id="http-status"></p>
+        </div>
+
+        <h3>WebSocket 测试</h3>
+        <div class="playground" id="ws-playground">
+          <label for="ws-url">地址</label>
+          <input type="text" id="ws-url" value="ws://127.0.0.1:8765" />
+          <label for="ws-token">API Key（接入时追加 ?token=，可空）</label>
+          <input type="text" id="ws-token" placeholder="仅当配置了 http_api_key 时填写" autocomplete="off" />
+          <div class="actions">
+            <button type="button" class="primary" id="ws-connect">连接</button>
+            <button type="button" id="ws-disconnect" disabled>断开</button>
+            <button type="button" id="ws-clear">清空日志</button>
+          </div>
+          <p class="status" id="ws-status">未连接</p>
+          <div class="actions">
+            <button type="button" class="ws-preset" data-msg='{"type":"stock_code","action":"get"}'>stock_code get</button>
+            <button type="button" class="ws-preset" data-msg='{"type":"stock_code","action":"post","code":"600519","target":"all"}'>stock_code post</button>
+            <button type="button" class="ws-preset" data-msg='{"type":"self_stock","action":"list"}'>self_stock list</button>
+            <button type="button" class="ws-preset" data-msg='{"type":"ths_block","action":"list","kind":"custom"}'>ths_block list</button>
+            <button type="button" class="ws-preset" data-msg='{"type":"ths_block","action":"tree","kind":"conception"}'>ths_block tree</button>
+            <button type="button" class="ws-preset" data-msg='{"type":"ths_block","action":"add_stocks","block_name":"ABF","items":[{"kind":"hit","code":"600519"}]}'>ths_block add_stocks</button>
+            <button type="button" class="ws-preset" data-msg='{"type":"ths_theme","action":"list"}'>ths_theme list</button>
+            <button type="button" class="ws-preset" data-msg='{"type":"ths_stock_list","action":"list"}'>ths_stock_list</button>
+            <button type="button" class="ws-preset" data-msg='{"type":"short_genius","action":"accounts"}'>short_genius</button>
+            <button type="button" class="ws-preset" data-msg='{"type":"trade","action":"probe"}'>trade probe</button>
+            <button type="button" class="ws-preset" data-msg='{"type":"trade","action":"clipboard_check","ths_dir":"C:\\同花顺"}'>trade clipboard</button>
+            <button type="button" class="ws-preset" data-msg='{"type":"trade","action":"snapshot","ths_dir":"C:\\同花顺"}'>trade snapshot</button>
+            <button type="button" class="ws-preset" data-msg='{"type":"risk_control","action":"get","ths_dir":"C:\\同花顺"}'>risk_control get</button>
+          </div>
+          <label for="ws-body">自定义 JSON 消息</label>
+          <textarea id="ws-body">{"type": "stock_code", "action": "get"}</textarea>
+          <div class="actions">
+            <button type="button" id="ws-send" disabled>发送</button>
+          </div>
+          <div class="log" id="ws-log">等待连接…</div>
+        </div>
+        <div class="note">写入自选股、板块成分、买卖下单会改动真实数据，测试时请谨慎；<code>trade snapshot</code> / <code>ths_block add_stocks</code> 预设中的路径与板块名请按本机修改。板块须已在同花顺客户端创建。若返回 401，请填写正确的 API Key。</div>
+      </section>
+    </main>
+  </div>
+  <script>
+(function () {
+  "use strict";
+
+  function pretty(obj) {
+    try {
+      return JSON.stringify(obj, null, 2);
+    } catch (e) {
+      return String(obj);
+    }
+  }
+
+  function parseQuery(text) {
+    const params = new URLSearchParams();
+    text.split(/\r?\n/).forEach(function (line) {
+      const s = line.trim();
+      if (!s) return;
+      const i = s.indexOf("=");
+      if (i < 0) return;
+      params.set(s.slice(0, i).trim(), s.slice(i + 1).trim());
+    });
+    return params;
+  }
+
+  const HTTP_PRESETS = [
+    { label: "GET /health", method: "GET", path: "/health", query: "", body: "" },
+    { label: "GET /stock-code/get", method: "GET", path: "/stock-code/get", query: "", body: "" },
+    { label: "POST /stock-code/post", method: "POST", path: "/stock-code/post", query: "", body: '{"code":"600519","target":"all"}' },
+    { label: "GET /self-stock", method: "GET", path: "/self-stock", query: "", body: "" },
+    { label: "GET /self-stock/list", method: "GET", path: "/self-stock/list", query: "", body: "" },
+    { label: "POST /self-stock/add", method: "POST", path: "/self-stock/add", query: "", body: '{"code":"600519"}' },
+    { label: "POST /self-stock/remove", method: "POST", path: "/self-stock/remove", query: "", body: '{"code":"600519"}' },
+    { label: "POST /self-stock/replace", method: "POST", path: "/self-stock/replace", query: "", body: '{"codes":["600519"]}' },
+    { label: "GET /ths-block/list", method: "GET", path: "/ths-block/list", query: "kind=custom", body: "" },
+    { label: "GET /ths-block/tree", method: "GET", path: "/ths-block/tree", query: "kind=conception", body: "" },
+    { label: "POST /ths-block/add-stocks", method: "POST", path: "/ths-block/add-stocks", query: "", body: '{"block_name":"ABF","items":[{"kind":"hit","code":"600519"}]}' },
+    { label: "GET /tdx-block/list", method: "GET", path: "/tdx-block/list", query: "tdx_dir=D:\\new_tdx", body: "" },
+    { label: "GET /ths-theme/list", method: "GET", path: "/ths-theme/list", query: "", body: "" },
+    { label: "GET /ths-stock-list", method: "GET", path: "/ths-stock-list", query: "", body: "" },
+    { label: "GET /short-genius/accounts", method: "GET", path: "/short-genius/accounts", query: "", body: "" },
+    { label: "GET /calendar/month", method: "GET", path: "/calendar/month", query: "", body: "" },
+    { label: "GET /trade/probe", method: "GET", path: "/trade/probe", query: "", body: "" },
+    { label: "GET /trade/snapshot", method: "GET", path: "/trade/snapshot", query: "ths_dir=C:\\同花顺", body: "" },
+    { label: "GET /trade/funds", method: "GET", path: "/trade/funds", query: "ths_dir=C:\\同花顺", body: "" },
+    { label: "GET /trade/holdings", method: "GET", path: "/trade/holdings", query: "ths_dir=C:\\同花顺", body: "" },
+    { label: "GET /trade/clipboard-check", method: "GET", path: "/trade/clipboard-check", query: "ths_dir=C:\\同花顺", body: "" },
+    { label: "POST /trade/buy", method: "POST", path: "/trade/buy", query: "", body: '{"ths_dir":"C:\\\\同花顺","code":"600519","price":100,"quantity":100}' },
+    { label: "POST /trade/sell", method: "POST", path: "/trade/sell", query: "", body: '{"ths_dir":"C:\\\\同花顺","code":"600519","price":100,"quantity":100}' },
+    { label: "GET /risk-control", method: "GET", path: "/risk-control", query: "ths_dir=C:\\同花顺", body: "" },
+    { label: "POST /risk-control/update", method: "POST", path: "/risk-control/update", query: "", body: '{"ths_dir":"C:\\\\同花顺","total_position_limit_pct":20,"single_stock_limit_pct":5}' },
+    { label: "POST /risk-control/enable", method: "POST", path: "/risk-control/enable", query: "", body: '{"ths_dir":"C:\\\\同花顺"}' },
+  ];
+
+  const presetEl = document.getElementById("http-preset");
+  const methodEl = document.getElementById("http-method");
+  const pathEl = document.getElementById("http-path");
+  const queryEl = document.getElementById("http-query");
+  const bodyEl = document.getElementById("http-body");
+  const baseEl = document.getElementById("http-base");
+  const httpTokenEl = document.getElementById("http-token");
+  const httpLog = document.getElementById("http-log");
+  const httpStatus = document.getElementById("http-status");
+
+  HTTP_PRESETS.forEach(function (p, i) {
+    const opt = document.createElement("option");
+    opt.value = String(i);
+    opt.textContent = p.label;
+    presetEl.appendChild(opt);
+  });
+
+  function applyHttpPreset(index) {
+    const p = HTTP_PRESETS[Number(index)];
+    if (!p) return;
+    methodEl.value = p.method;
+    pathEl.value = p.path;
+    queryEl.value = p.query || "";
+    bodyEl.value = p.body || "";
+  }
+
+  presetEl.addEventListener("change", function () {
+    applyHttpPreset(presetEl.value);
+  });
+  applyHttpPreset(0);
+
+  document.getElementById("http-clear").addEventListener("click", function () {
+    httpLog.textContent = "等待请求…";
+    httpStatus.textContent = "";
+  });
+
+  document.getElementById("http-send").addEventListener("click", async function () {
+    const base = baseEl.value.replace(/\/$/, "");
+    const path = pathEl.value.startsWith("/") ? pathEl.value : "/" + pathEl.value;
+    const params = parseQuery(queryEl.value);
+    let url = base + path;
+    if (params.toString()) {
+      url += (url.indexOf("?") >= 0 ? "&" : "?") + params.toString();
+    }
+    const method = methodEl.value;
+    const opts = { method, headers: {} };
+    const token = (httpTokenEl && httpTokenEl.value || "").trim();
+    if (token) {
+      opts.headers["Authorization"] = "Bearer " + token;
+    }
+    if (method === "POST") {
+      const raw = bodyEl.value.trim() || "{}";
+      try {
+        JSON.parse(raw);
+      } catch (e) {
+        httpLog.textContent = "Body 不是合法 JSON: " + e.message;
+        return;
+      }
+      opts.headers["Content-Type"] = "application/json";
+      opts.body = raw;
+    }
+    httpStatus.textContent = "请求中…";
+    const started = Date.now();
+    try {
+      const resp = await fetch(url, opts);
+      const text = await resp.text();
+      let parsed;
+      try {
+        parsed = JSON.parse(text);
+      } catch (e) {
+        parsed = text;
+      }
+      httpLog.textContent =
+        "HTTP " + resp.status + " (" + (Date.now() - started) + " ms)\n" +
+        "URL: " + url + "\n\n" +
+        (typeof parsed === "string" ? parsed : pretty(parsed));
+      httpStatus.textContent = resp.ok ? "成功" : "HTTP " + resp.status;
+    } catch (err) {
+      httpLog.textContent = "请求失败: " + err.message + "\n\n请确认软件已启动、已在设置中启用 HTTP，并点击「启动」。若返回 401，请填写 API Key。";
+      httpStatus.textContent = "失败";
+    }
+  });
+
+  let ws = null;
+  const wsUrlEl = document.getElementById("ws-url");
+  const wsTokenEl = document.getElementById("ws-token");
+  const wsLog = document.getElementById("ws-log");
+  const wsStatus = document.getElementById("ws-status");
+  const wsConnectBtn = document.getElementById("ws-connect");
+  const wsDisconnectBtn = document.getElementById("ws-disconnect");
+  const wsSendBtn = document.getElementById("ws-send");
+  const wsBodyEl = document.getElementById("ws-body");
+
+  function wsAppend(dir, data) {
+    const ts = new Date().toLocaleTimeString();
+    const line = "[" + ts + "] " + dir + "\n" + (typeof data === "string" ? data : pretty(data)) + "\n\n";
+    if (wsLog.textContent === "等待连接…") {
+      wsLog.textContent = line;
+    } else {
+      wsLog.textContent += line;
+    }
+    wsLog.scrollTop = wsLog.scrollHeight;
+  }
+
+  function setWsUi(connected) {
+    wsConnectBtn.disabled = connected;
+    wsDisconnectBtn.disabled = !connected;
+    wsSendBtn.disabled = !connected;
+    wsStatus.textContent = connected ? "已连接" : "未连接";
+  }
+
+  function wsSendRaw(text) {
+    if (!ws || ws.readyState !== WebSocket.OPEN) return;
+    ws.send(text);
+    try {
+      wsAppend("→ 发送", JSON.parse(text));
+    } catch (e) {
+      wsAppend("→ 发送", text);
+    }
+  }
+
+  function buildWsUrl(base, token) {
+    const raw = (base || "").trim();
+    const key = (token || "").trim();
+    if (!key) return raw;
+    try {
+      const u = new URL(raw);
+      u.searchParams.set("token", key);
+      return u.toString();
+    } catch (e) {
+      const sep = raw.indexOf("?") >= 0 ? "&" : "?";
+      return raw + sep + "token=" + encodeURIComponent(key);
+    }
+  }
+
+  wsConnectBtn.addEventListener("click", function () {
+    if (ws) return;
+    const url = buildWsUrl(wsUrlEl.value, wsTokenEl && wsTokenEl.value);
+    try {
+      ws = new WebSocket(url);
+    } catch (e) {
+      wsAppend("系统", "无法创建 WebSocket: " + e.message);
+      return;
+    }
+    ws.addEventListener("open", function () {
+      setWsUi(true);
+      wsAppend("系统", "连接成功");
+    });
+    ws.addEventListener("message", function (ev) {
+      try {
+        wsAppend("← 收到", JSON.parse(ev.data));
+      } catch (e) {
+        wsAppend("← 收到", ev.data);
+      }
+    });
+    ws.addEventListener("close", function () {
+      wsAppend("系统", "连接已关闭");
+      ws = null;
+      setWsUi(false);
+    });
+    ws.addEventListener("error", function () {
+      wsAppend("系统", "连接错误（请确认已启用实时推送并启动；若鉴权开启请填写 API Key）");
+    });
+  });
+
+  wsDisconnectBtn.addEventListener("click", function () {
+    if (ws) {
+      ws.close();
+      ws = null;
+    }
+    setWsUi(false);
+  });
+
+  document.getElementById("ws-clear").addEventListener("click", function () {
+    wsLog.textContent = ws ? "" : "等待连接…";
+  });
+
+  wsSendBtn.addEventListener("click", function () {
+    const raw = wsBodyEl.value.trim();
+    if (!raw) return;
+    try {
+      JSON.parse(raw);
+    } catch (e) {
+      wsAppend("系统", "JSON 无效: " + e.message);
+      return;
+    }
+    wsSendRaw(raw);
+  });
+
+  document.querySelectorAll(".ws-preset").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      const msg = btn.getAttribute("data-msg") || "";
+      wsBodyEl.value = msg;
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        wsSendRaw(msg);
+      }
+    });
+  });
+
+  setWsUi(false);
+})();
+  </script>
+</body>
+</html>

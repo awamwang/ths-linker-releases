@@ -1,0 +1,8 @@
+{
+    "version":  "0.1.0",
+    "published_at":  "2026-10-08T19:09:32+08:00",
+    "schema":  1,
+    "sha256":  "0ea1123d1c4696dbca8dd70b5d1eaf37510a89e3ff27bdd057abc6b5b9f92af4",
+    "exe_url":  "https://github.com/awamwang/ths-linker-releases/releases/download/v0.1.0/ths-linker-v0.1.0.exe",
+    "notes":  "## [0.1.0] - 2026-10-08\n\n### 新增\n\n- 多源自动升级：启动后静默检查与托盘「检查更新」手动触发；按序探测多个更新源（GitHub Pages 清单 / GitHub Releases API / 自定义镜像），任一源不可达自动降级，可用源中取版本最高；下载经 sha256 完整性校验，自替换安装无需重新安装，中断可自动恢复。\n- 同花顺本地联动：监控页（监听/发送/买卖条）、托盘与置顶悬浮窗（买卖条/委托窗/风控告警）、多实例支持。\n- WebSocket 实时推送与客户端指令（股票变化、实例、仓位、交易、板块等）、HTTP 接口、接口测试台。\n- 交易下单（easyths/xiadan）、自选股云端读写（ths-favorite）、板块/热点主题/股票列表（Pro）、风控规则与买卖提示。\n\n### 变更\n\n- 使用手册（docs/index.html）新增「软件升级」章节、日常使用速览与托盘「检查更新」说明。\n\n### 修复\n\n- release.ps1 双引号字符串中 `$ReleasesRepo:` 的 PowerShell 解析告警；发布脚本补齐 UTF-8 BOM。\n\n\u003c!-- 新版本请插在 Unreleased 下方，模板："
+}

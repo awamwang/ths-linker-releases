@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>同花顺助手 ths-linker</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --panel: #1a2332;
+      --text: #e7ecf3;
+      --muted: #9aa8bc;
+      --accent: #2dd4bf;
+      --border: #2a3648;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 420px at 10% -10%, rgba(45, 212, 191, 0.18), transparent 55%),
+        radial-gradient(700px 380px at 90% 0%, rgba(56, 189, 248, 0.12), transparent 50%),
+        var(--bg);
+      line-height: 1.6;
+    }
+    main {
+      width: min(720px, 92vw);
+      margin: 0 auto;
+      padding: 72px 0 96px;
+    }
+    .brand {
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 12px;
+    }
+    .brand span { color: var(--accent); }
+    .lead {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin: 0 0 28px;
+      max-width: 36em;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 36px;
+    }
+    a.btn {
+      display: inline-block;
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      color: var(--text);
+      background: var(--panel);
+    }
+    a.btn-primary {
+      background: var(--accent);
+      color: #042f2e;
+      border-color: transparent;
+    }
+    a.btn:hover { filter: brightness(1.08); }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-bottom: 14px;
+    }
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+    .card p, .card li { color: var(--muted); margin: 0; }
+    .card ul { margin: 8px 0 0; padding-left: 1.2em; }
+    footer {
+      margin-top: 40px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+    footer a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1 class="brand">同花顺助手 <span>ths-linker</span></h1>
+    <p class="lead">
+      Windows 本地联动工具：读取同花顺当前选中股票，经 WebSocket / HTTP 推送与跳转，并支持自选股与交易相关能力。
+      本站仅提供安装包与基础文档，不含源码。
+    </p>
+    <div class="actions">
+      <a class="btn btn-primary" href="https://github.com/awamwang/ths-linker-releases/releases">下载 Releases</a>
+      <a class="btn" href="docs/index.html">使用说明与接口</a>
+      <a class="btn" href="https://github.com/awamwang/ths-linker-releases/blob/main/CHANGELOG.md">变更记录</a>
+    </div>
+    <section class="card">
+      <h2>快速开始</h2>
+      <ul>
+        <li>启动同花顺官方最新版客户端</li>
+        <li>运行 <code>ths-linker.exe</code>，在「监控」页勾选实例并点「启动」</li>
+        <li>需要外部程序对接时，见文档中的 WebSocket / HTTP 章节</li>
+      </ul>
+    </section>
+    <section class="card">
+      <h2>系统要求</h2>
+      <p>Windows 10/11（x64）。精简系统若缺少运行库，请安装 Microsoft Visual C++ Redistributable（x64）。</p>
+    </section>
+    <footer>
+      仓库：<a href="https://github.com/awamwang/ths-linker-releases">awamwang/ths-linker-releases</a>
+      · 文档由主项目同步，请勿在本仓直接改协议正文
+    </footer>
+  </main>
+</body>
+</html>
