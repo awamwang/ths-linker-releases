@@ -1,9 +1,10 @@
+<!-- AI生成 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>同花顺助手 使用文档</title>
+  <title>智存同花顺联动 使用文档</title>
   <style>
     :root {
       --bg: #f6f7f9;
@@ -268,7 +269,7 @@
 <body>
   <div class="layout">
     <nav>
-      <h1>同花顺助手</h1>
+      <h1>智存同花顺联动</h1>
       <p class="muted" style="margin:0 0 12px;font-size:0.85rem;">同花顺本地联动 · 使用说明与接口</p>
 
       <div class="group">
@@ -316,7 +317,7 @@
         <p>默认以 <strong>Desktop Shell + Web UI</strong> 启动（主界面、托盘与悬浮窗）。默认配置即可使用，<strong>无需先改设置</strong>。按下面步骤操作：</p>
         <ol class="steps">
           <li>启动<strong>同花顺官方最新版</strong>客户端，保持至少一个窗口打开（默认内存读码不支持第三方客户端）。</li>
-          <li>启动<strong>同花顺助手</strong>（本软件）。</li>
+          <li>启动<strong>智存同花顺联动</strong>（本软件）。</li>
           <li>在顶部导航打开「<strong>监控</strong>」页，从左侧选中同花顺安装路径；在右侧勾选「监听」「发送」和/或「买卖条」。</li>
           <li>点击窗口底部状态栏<strong>「启动」</strong>（运行中可点「重新启动」）。</li>
         </ol>
@@ -349,8 +350,8 @@
               <td>「设置 → 实时推送」勾选「启用实时推送」→ 点「启动」→ 见 <a class="index-link" href="#ws-overview">WebSocket 说明</a>。未配置 <code>http_api_key</code> 时可无 token 连接；配置后见 <a class="index-link" href="#auth">接口鉴权</a>。</td>
             </tr>
             <tr>
-              <td>读写自选股、调用 HTTP 接口</td>
-              <td>「设置 → HTTP 接口」勾选启用 →（可选）配置 <code>http_api_key</code>（见 <a class="index-link" href="#auth">鉴权</a>）→ 见 <a class="index-link" href="#http-overview">HTTP 说明</a>。写入自选股在实例「自选股」页配置云端账号。Pro 功能。</td>
+              <td>经 HTTP 接口读写自选股等</td>
+              <td>「设置 → HTTP 接口」勾选启用（需 Pro）→（可选）配置 <code>http_api_key</code>（见 <a class="index-link" href="#auth">鉴权</a>）→ 见 <a class="index-link" href="#http-overview">HTTP 说明</a>。软件内「自选股」标签维护为基础版能力；写入需在实例页配置云端账号。</td>
             </tr>
             <tr>
               <td>查询板块 / 热点主题 / 匹配个股所属板块</td>
@@ -361,8 +362,8 @@
               <td>先在同花顺客户端<strong>新建</strong>自定义板块（至少含 1 只股票），再在「板块」标签点「添加成分股…」，或调用 HTTP / WS <code>add_stocks</code>。仅支持已有板块追加/覆盖成分，不支持新建 / 删除 / 重命名。写入后请在同花顺中刷新或重启后再查看。</td>
             </tr>
             <tr>
-              <td>与通达信自定义板块双向同步</td>
-              <td>「板块」→「通达信同步」：填写通达信目录、配置名称映射后整表覆盖同步板块；亦支持「我的自选」与通达信自选股双向整表同步。亦可调用 <a class="index-link" href="#http-tdx-block">通达信板块接口</a>。</td>
+              <td>与通达信自定义板块按方向同步</td>
+              <td>「板块」→「同步设置」：填写通达信目录、配置名称映射，并为每条映射选择同步方向（通达信 → 同花顺 或 反之为二选一，可清除表示不同步）。点「立即同步」按各行方向整表覆盖；「板块」页的「按配置同步」按已保存的方向一键执行。亦支持「我的自选」与通达信自选股双向整表同步。亦可调用 <a class="index-link" href="#http-tdx-block">通达信板块接口</a>。</td>
             </tr>
             <tr>
               <td>显示买卖悬浮条 / 下单窗</td>
@@ -453,8 +454,8 @@
               <td>刷新账户、复制 JSON、买入 / 卖出、配置实例级风控（需 Pro；下单经 easyths / xiadan）。风控设置含「风控规则」「买卖提示」两个标签；风控拦截时弹出独立告警悬浮窗。</td>
             </tr>
             <tr>
-              <td>「自选股」标签</td>
-              <td>查看与编辑本地/云端自选股：单只添加 / 删除、整表替换、整表恢复、复制列表 / 复制 JSON（写入需 Pro + 云端认证 + ths-favorite）。</td>
+              <td>「自选股」标签（默认首页，位于「交易」前）</td>
+              <td>查看与编辑本地/云端自选股：单只添加 / 删除、整表替换、整表恢复、复制列表 / 复制 JSON（基础版可用；写入需云端认证 + ths-favorite）。</td>
             </tr>
             <tr>
               <td>「股票代码获取」标签</td>
@@ -466,7 +467,7 @@
             </tr>
             <tr>
               <td>「板块」标签 / 匹配板块</td>
-              <td>Pro：刷新本地缓存、按类型导出 JSON、向<strong>已有</strong>自定义板块「添加成分股」、与通达信板块 / 自选双向同步。匹配结果在实例详情顶部「匹配板块」展示；导出 / 匹配类型可单独勾选（含「热点主题」）。</td>
+              <td>Pro：刷新本地缓存、按类型导出 JSON、向<strong>已有</strong>自定义板块「添加成分股」、与通达信板块按配置方向同步（「同步设置」中逐条选择方向，「按配置同步」一键执行）、与自选双向同步。匹配结果在实例详情顶部「匹配板块」展示；导出 / 匹配类型可单独勾选（含「热点主题」）。</td>
             </tr>
           </tbody>
         </table>
@@ -475,7 +476,7 @@
         <img class="screenshot" src="assets/交易-风控设置.png" alt="交易风控设置对话框" />
         <p class="shot-caption">交易风控设置对话框（「交易」标签 → 编辑规则）：含「风控规则」与「买卖提示」两个标签。</p>
         <img class="screenshot" src="assets/板块管理界面.png" alt="板块管理界面" />
-        <p class="shot-caption">板块标签：本地板块按类型统计、导出 / 匹配个股勾选，以及与通达信的板块、自选双向同步。</p>
+        <p class="shot-caption">板块标签：本地板块按类型统计、导出 / 匹配个股勾选，以及与通达信板块按配置方向同步、与自选双向同步。</p>
         <img class="screenshot" src="assets/自选股界面.png" alt="自选股界面" />
         <p class="shot-caption">自选股标签：云端账号配置、单只添加、整表替换与整表恢复，列表可复制。</p>
         <img class="screenshot" src="assets/交易日历.png" alt="交易日历页" />
@@ -508,7 +509,7 @@
         <h2>软件升级</h2>
         <p>本软件支持<strong>在线自动升级</strong>：检测到新版本后自动下载并完成安装替换，<strong>无需重新安装、无需手动解压覆盖</strong>。安装包通过 <code>sha256</code> 完整性校验后才会应用；升级过程会自动重启软件以完成替换。</p>
         <div class="note">
-          <strong>日常使用速览</strong>：① 启动同花顺官方最新版并保持窗口打开 → ② 启动同花顺助手 → ③ 「监控」页勾选「监听 / 发送」并点状态栏「启动」→ ④ 关闭主窗口进入系统托盘（进程继续运行）→ ⑤ 有新版本时在托盘点「<strong>检查更新</strong>」即可升级。各功能细节见「<a class="index-link" href="#guide-index">我想…</a>」「<a class="index-link" href="#monitor">监控页</a>」「<a class="index-link" href="#shell-tray">托盘与悬浮窗</a>」。
+          <strong>日常使用速览</strong>：① 启动同花顺官方最新版并保持窗口打开 → ② 启动智存同花顺联动 → ③ 「监控」页勾选「监听 / 发送」并点状态栏「启动」→ ④ 关闭主窗口进入系统托盘（进程继续运行）→ ⑤ 有新版本时在托盘点「<strong>检查更新</strong>」即可升级。各功能细节见「<a class="index-link" href="#guide-index">我想…</a>」「<a class="index-link" href="#monitor">监控页</a>」「<a class="index-link" href="#shell-tray">托盘与悬浮窗</a>」。
         </div>
         <h3>升级方式</h3>
         <ul>
@@ -574,7 +575,7 @@
             </tr>
             <tr>
               <td>基本配置（监听与发送）</td>
-              <td>监听轮询与连接方式：读取间隔（默认 0.3 秒）、连接类型（默认「内存」读 hexin.exe，可改「日志」轮询 HexinHttp）、按键精灵买卖按键与输入间隔、开机自启。内存偏移保存在 <code>~/.ths-linker/memory_offset.json</code>。</td>
+              <td>监听轮询与连接方式：读取间隔（默认 0.3 秒）、连接类型（默认「内存」读 hexin.exe，可改「日志」轮询 HexinHttp）、按键精灵买卖按键与输入间隔、严格模式放行窗口（1–120 秒，默认 10）、开机自启。内存偏移保存在 <code>~/.ths-linker/memory_offset.json</code>。</td>
             </tr>
             <tr>
               <td>实时推送（WebSocket）</td>
@@ -639,19 +640,19 @@ ws://127.0.0.1:8765
 # 配置了 http_api_key 后须带凭证
 curl -H "Authorization: Bearer YOUR_HTTP_API_KEY" http://127.0.0.1:8766/stock-code/get
 ws://127.0.0.1:8765/?token=YOUR_HTTP_API_KEY</pre>
-        <div class="note">业务 License（交易 / 自选写入 / 板块等）与本鉴权正交：通过鉴权后仍可能因未激活 Pro 返回 <code>license_required</code>。</div>
+        <div class="note">业务 License（交易 / 板块 / HTTP 启服等）与本鉴权正交：通过鉴权后仍可能因未激活 Pro 返回 <code>license_required</code>。自选股维护为基础版能力。</div>
       </section>
 
       <section id="ws-overview">
         <h2>WebSocket 说明与地址</h2>
         <div class="note">
-          本节描述的是本软件对外暴露的<strong>公共联动能力</strong>（本机 WebSocket 接口），供你自己的脚本、网页或其它程序对接使用。若需与软件深度集成、定制开发或商业合作，请联系开发者：<a href="mailto:wm.keepgoing@gmail.com">wm.keepgoing@gmail.com</a>。
+          本节描述的是本软件对外暴露的<strong>公共联动能力</strong>（本机 WebSocket 接口），供你自己的脚本、网页或其它程序对接使用。若需与软件深度集成、定制开发或商业合作，请联系开发者：待添加。
         </div>
         <p>使用前：「设置 → 实时推送」勾选「启用实时推送」→ 状态栏点击「启动」。默认地址：</p>
         <pre>ws://127.0.0.1:8765</pre>
         <p>未配置 <code>http_api_key</code> 时可直接连接 <code>ws://127.0.0.1:8765</code>；已配置时请使用 <code>ws://127.0.0.1:8765/?token=YOUR_KEY</code> 或握手携带 <code>Authorization: Bearer …</code>（见 <a class="index-link" href="#auth">接口鉴权</a>）。</p>
         <p>消息均为 <strong>JSON 文本帧</strong>。连接成功后服务端会先推送 <code>stock_code</code>（<code>action: get</code>），再推送各安装目录缓存的 <code>stock_code</code>（<code>action: push</code>，若有），若该实例已有本地持仓缓存则再推送 <code>trade</code>（<code>action: push</code>）。运行中若同花顺实例身份变化（PID / 窗口标题 / 安装路径），会额外推送 <code>instances</code>（<code>action: push</code>）。</p>
-        <p class="muted">端口与地址可在「设置 → 实时推送」中查看、修改并复制。股票推送/改码在源码侧为免费能力；交易、自选写入、板块等仍按 Pro 门控。</p>
+        <p class="muted">端口与地址可在「设置 → 实时推送」中查看、修改并复制。股票推送/改码与自选股维护在源码侧为免费能力；交易、板块、HTTP 启服等仍按 Pro 门控。</p>
       </section>
 
       <section id="ws-push">
@@ -851,8 +852,7 @@ ws://127.0.0.1:8765/?token=YOUR_HTTP_API_KEY</pre>
     "stock_sell_block_prompts": {},
     "watch_enabled": true,
     "watch_interval_sec": 10.0,
-    "xiadan_risk_unrestricted": false,
-    "xiadan_block_order_popups": false,
+    "strict_mode": false,
     "global_no_buy": false,
     "global_no_buy_reason": "",
     "global_no_buy_meta": {},
@@ -908,8 +908,8 @@ ws://127.0.0.1:8765/?token=YOUR_HTTP_API_KEY</pre>
         </table>
         <p>服务端回复 <code>stock_code_result</code>；<code>post</code> 在后台线程执行。</p>
 
-        <h3 id="ws-cmd-self-stock"><code>self_stock</code> — 自选股读写</h3>
-        <p>与 HTTP 自选股 API 等价；读本地 <code>SelfStockInfo.json</code>，写经 ths-favorite。字段与 HTTP 请求体相同，通过 <code>action</code> 区分操作。</p>
+        <h3 id="ws-cmd-self-stock"><code>self_stock</code> — 自选股读写（免费）</h3>
+        <p>与 HTTP 自选股 API 等价；读本地 <code>SelfStockInfo.json</code>，写经 ths-favorite。字段与 HTTP 请求体相同，通过 <code>action</code> 区分操作。功能本身免费；经 HTTP 调用时另需启用 HTTP（Pro）。</p>
         <pre>// 列出「我的自选」
 { "type": "self_stock", "action": "list" }
 
@@ -1029,7 +1029,7 @@ ws://127.0.0.1:8765/?token=YOUR_HTTP_API_KEY</pre>
         <p>服务端回复 <code>trade_result</code>；查询与下单在后台线程执行。持仓查询通过 Ctrl+C 复制表格，若失败请检查 Quicker 等工具是否拦截快捷键，并确认 xiadan 在「查询→资金股票/资金股份」或「双向委托→持仓」页面且窗口在前台。</p>
 
         <h3 id="ws-cmd-risk-control"><code>risk_control</code> — 风控配置读写</h3>
-        <p>读写实例级风控配置（仓位上限、提示词、文件监听等），与「监控 → 交易」页风控设置共用配置文件。按 <code>ths_dir</code> + 可选 <code>title</code> / <code>pid</code> 定位实例；关闭风控、以及<strong>放宽</strong>风控（上调总仓 / 单票上限、取消「限制同花顺下单」、取消「屏蔽同花顺买卖弹框」、关闭「全局禁止买入」）均需提供「设置 → 风控密码」中配置的全局 <code>password</code>。</p>
+        <p>读写实例级风控配置（仓位上限、仓位宽限、提示词、文件监听等），与「监控 → 交易」页风控设置共用配置文件。按 <code>ths_dir</code> + 可选 <code>title</code> / <code>pid</code> 定位实例；关闭风控、以及<strong>放宽</strong>风控（上调总仓 / 单票上限、上调仓位宽限、关闭「严格模式」、关闭「全局禁止买入」）均需提供「设置 → 风控密码」中配置的全局 <code>password</code>。</p>
         <pre>// 读取当前配置
 { "type": "risk_control", "action": "get", "ths_dir": "C:\\同花顺", "title": "同花顺(普通)" }
 
@@ -1056,10 +1056,10 @@ ws://127.0.0.1:8765/?token=YOUR_HTTP_API_KEY</pre>
             <tr><td><code>enabled</code></td><td>update 时可选</td><td>设为 <code>false</code> 时须同时提供 <code>password</code></td></tr>
             <tr><td><code>password</code></td><td>disable 或放宽 / 关闭时</td><td>全局风控关闭密码（在「设置 → 风控密码」配置）；关闭风控或放宽风控时须提供</td></tr>
             <tr><td><code>total_position_limit_pct</code> / <code>single_stock_limit_pct</code></td><td>否</td><td>总仓 / 单票仓位上限（0–100，百分比）</td></tr>
+            <tr><td><code>position_slack_pct</code></td><td>否</td><td>仓位宽限（0–10，默认 3）：总仓与单票上限各自叠加后再做拦截判定</td></tr>
             <tr><td><code>market_prompts</code> / <code>stock_buy_prompts</code> / <code>sell_prompts</code></td><td>否</td><td>提示词数组；买入拦截时展示市场 + 单票提示，卖出时在结果中带卖出提示</td></tr>
             <tr><td><code>sell_block_prompts</code> / <code>stock_sell_prompts</code> / <code>stock_sell_block_prompts</code></td><td>否</td><td>卖出相关：全局卖出禁止（拦截）、单票卖出提示（不拦截）、单票卖出禁止（拦截）；单票格式 <code>代码: 提示1,提示2</code></td></tr>
-            <tr><td><code>xiadan_risk_unrestricted</code></td><td>否</td><td>本实例不拦截 / 提示同花顺 xiadan 买卖面板；对应界面「风控限制同花顺下单」，取消勾选即置 <code>true</code></td></tr>
-            <tr><td><code>xiadan_block_order_popups</code></td><td>否</td><td>屏蔽同花顺买卖浮层弹框（检测到买卖浮层立即关闭，默认关）</td></tr>
+            <tr><td><code>strict_mode</code></td><td>否</td><td>严格模式（默认关）：开启后同花顺买卖浮层只在本软件授权调用（键盘精灵唤起前后台内）放行，手动点击 / 快捷键唤起的弹窗会被关闭并告警；关闭后任何情况都不拦截买卖弹窗</td></tr>
             <tr><td><code>buy_tips</code> / <code>sell_tips</code></td><td>否</td><td>原生买卖前逐条确认的提示（条目 <code>{text, enabled}</code>，可空）；受 <code>trade_tips_enabled</code> 总开关控制</td></tr>
             <tr><td><code>trade_tips_enabled</code></td><td>否</td><td>买卖提示总开关，独立于风控规则开关</td></tr>
             <tr><td><code>global_no_buy</code></td><td>否</td><td>全局禁止买入；开启后拦截全部买入，优先级高于仓位上限与买入提示词</td></tr>
@@ -1086,7 +1086,7 @@ ws://127.0.0.1:8765/?token=YOUR_HTTP_API_KEY</pre>
       <section id="http-overview">
         <h2>HTTP 说明与地址</h2>
         <div class="note">
-          本节描述的是本软件对外暴露的<strong>公共 HTTP API</strong>，供外部程序读写自选股、联动股票、查询交易与风控等。若需配合软件做定制开发或集成方案，请联系开发者：<a href="mailto:wm.keepgoing@gmail.com">wm.keepgoing@gmail.com</a>。
+          本节描述的是本软件对外暴露的<strong>公共 HTTP API</strong>，供外部程序读写自选股、联动股票、查询交易与风控等。若需配合软件做定制开发或集成方案，请联系开发者：待添加。
         </div>
         <p>使用前：「设置 → HTTP 接口」勾选启用 →（可选）配置 <code>http_api_key</code>（见鉴权）→ 状态栏点击「启动」。默认地址：</p>
         <pre>http://127.0.0.1:8766</pre>
@@ -1307,7 +1307,7 @@ Content-Type: application/json
   "hexin": { "id": "12345", "pid": 12345, "hwnd": 67890, "title": "同花顺", "ths_dir": "C:\\同花顺" },
   "xiadan": { "pid": 23456, "hwnd": 78901, "path": "C:\\同花顺\\xiadan.exe" }
 }</pre>
-        <div class="note">买卖为真实下单，测试时请用小数量并在模拟环境验证；easyths 服务未启动时返回 <code>自动交易服务不可达</code>。</div>
+        <div class="note">买卖为真实下单，测试时请用小数量并在模拟环境验证；easyths 服务未启动时返回 <code>交易辅助服务不可达</code>。</div>
       </section>
 
       <section id="http-risk-control">
@@ -1320,14 +1320,14 @@ Content-Type: application/json
             <tr><td><code>enabled</code></td><td>是否启用风控</td></tr>
             <tr><td><code>total_position_limit_pct</code></td><td>总仓位上限（占账户权益百分比，0–100）</td></tr>
             <tr><td><code>single_stock_limit_pct</code></td><td>单票仓位上限（百分比）</td></tr>
+            <tr><td><code>position_slack_pct</code></td><td>仓位宽限（0–10，默认 3）：总仓与单票上限各自叠加后再判定 / 计算剩余额度</td></tr>
             <tr><td><code>market_prompts</code></td><td>市场风控提示词（买入被拦截时展示）</td></tr>
             <tr><td><code>stock_buy_prompts</code></td><td>单票买入拦截提示词</td></tr>
             <tr><td><code>sell_prompts</code></td><td>卖出提示词（全局，不拦截；出现在卖出 API 结果 <code>risk_prompts</code>）</td></tr>
             <tr><td><code>sell_block_prompts</code></td><td>卖出禁止提示词（全局，拦截且不可跳过）</td></tr>
             <tr><td><code>stock_sell_prompts</code></td><td>单票卖出提示词（不拦截）；格式 <code>代码: 提示1,提示2</code></td></tr>
             <tr><td><code>stock_sell_block_prompts</code></td><td>单票卖出禁止提示词（拦截）</td></tr>
-            <tr><td><code>xiadan_risk_unrestricted</code></td><td>本实例不拦截 / 提示同花顺 xiadan 买卖面板（界面「风控限制同花顺下单」的取反）</td></tr>
-            <tr><td><code>xiadan_block_order_popups</code></td><td>屏蔽同花顺买卖浮层弹框（检测到立即关闭，默认关）</td></tr>
+            <tr><td><code>strict_mode</code></td><td>严格模式：开启后同花顺买卖浮层仅本软件授权调用时放行，手动唤起立即关闭并告警；关闭后任何情况不拦截（默认关）</td></tr>
             <tr><td><code>buy_tips</code> / <code>sell_tips</code></td><td>原生买卖前逐条确认的提示（<code>{text, enabled}</code>）；受 <code>trade_tips_enabled</code> 控制</td></tr>
             <tr><td><code>trade_tips_enabled</code></td><td>买卖提示总开关，独立于风控规则开关</td></tr>
             <tr><td><code>global_no_buy</code></td><td>全局禁止买入开关；开启后拦截全部买入，优先于仓位上限与买入提示词</td></tr>
@@ -1354,7 +1354,30 @@ Content-Type: application/json
   "global_no_buy_reason": "指数大跌暂停买入",
   "global_no_buy_meta": {"source": "strategy", "level": 2}
 }</pre>
-        <div class="note">关闭风控（<code>enabled: false</code> 或 <code>/risk-control/disable</code>）须先在「设置 → 风控密码」配置全局关闭密码，并在请求中提供 <code>password</code>。<strong>放宽</strong>风控（上调总仓 / 单票上限、取消「限制同花顺下单」、取消「屏蔽同花顺买卖弹框」、关闭「全局禁止买入」）同样需要 <code>password</code>。</div>
+        <div class="note">关闭风控（<code>enabled: false</code> 或 <code>/risk-control/disable</code>）须先在「设置 → 风控密码」配置全局关闭密码，并在请求中提供 <code>password</code>。<strong>放宽</strong>风控（上调总仓 / 单票上限、上调仓位宽限、关闭「严格模式」、关闭「全局禁止买入」）同样需要 <code>password</code>。</div>
+      </section>
+
+      <section id="risk-password">
+        <h2>风控密码与恢复码</h2>
+        <p>关闭风控或<strong>放宽</strong>风控（上调总仓 / 单票上限、上调仓位宽限、关闭「严格模式」、关闭「全局禁止买入」）前，需先到「设置 → 风控密码」设置<strong>全局风控关闭密码</strong>。该密码用于上述敏感操作的事前校验（见上一节「HTTP 风控接口」）。</p>
+        <h3>恢复码</h3>
+        <p>设置或修改风控密码时，软件会<strong>一次性签发恢复码</strong>。当忘记风控密码时，可在「设置 → 风控密码」用恢复码重置密码（重置成功后会重新签发新的恢复码）。</p>
+        <ul>
+          <li><strong>一次性</strong>：每个恢复码仅可使用一次，用后即失效；界面与 <code>/risk-password/status</code> 会显示<strong>剩余恢复码数量</strong>。</li>
+          <li><strong>立即离线保存</strong>：恢复码仅在设置 / 重置时短暂展示，请<strong>立即抄写或截图离线保存</strong>；重装软件或记录丢失后将无法找回。</li>
+          <li>未设置风控密码时，会提示「设密后会显示一次性恢复码，请立即离线保存」。</li>
+        </ul>
+        <div class="note">恢复码与风控密码相互独立：恢复码用于「重置密码」，不能代替密码直接关闭风控。忘记密码时请走「用恢复码重置」，重置成功后再用新密码执行关闭 / 放宽。</div>
+        <h3>相关接口（Control Plane，Web UI 内部调用）</h3>
+        <table>
+          <thead><tr><th>路由 / action</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td><code>/risk-password/status</code></td><td>查询是否已设密及剩余恢复码数量（<code>configured</code>、<code>recovery_codes_remaining</code>）</td></tr>
+            <tr><td><code>/risk-password</code> action=<code>set</code></td><td>设置或修改密码；首次设置返回一次性恢复码，修改需提供 <code>old_password</code></td></tr>
+            <tr><td><code>/risk-password</code> action=<code>verify</code></td><td>校验密码是否正确（关闭 / 放宽风控前内部调用）</td></tr>
+            <tr><td><code>/risk-password</code> action=<code>recover</code></td><td>用恢复码重置密码（<code>recovery_code</code> + 新密码），成功后返回新的恢复码</td></tr>
+          </tbody>
+        </table>
       </section>
 
       <section id="playground">

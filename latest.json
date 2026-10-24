@@ -1,8 +1,15 @@
 {
-    "version":  "0.2.0",
-    "published_at":  "2026-10-08T19:26:57+08:00",
-    "schema":  1,
-    "sha256":  "6cd4de26a77a5bef79818d0f1b7825a332f3290ff0c84967d20c707c0405ea1c",
-    "exe_url":  "https://github.com/awamwang/ths-linker-releases/releases/download/v0.2.0/ths-linker-v0.2.0.exe",
-    "notes":  "## [0.2.0] - 2026-10-08\n\n### 变更\n\n- 功能与 0.1.0 一致，本次发布用于验证多源自动升级链路（0.1.0 → 0.2.0）。"
+  "schema": 2,
+  "product": "ths-linker",
+  "version": "0.3.0",
+  "channel": "stable",
+  "exe_urls": [
+    "https://api.awam.wang/updates/ths-linker/download?version=0.3.0",
+    "https://github.com/awamwang/ths-linker-releases/releases/download/v0.3.0/ths-linker-v0.3.0.exe"
+  ],
+  "exe_url": "https://github.com/awamwang/ths-linker-releases/releases/download/v0.3.0/ths-linker-v0.3.0.exe",
+  "sha256": "63d48018e73d20500f1732821550dc0d4f3fa4e4a3f73d65af3d4613bfa49b16",
+  "size": 146309057,
+  "published_at": "2026-10-25T01:48:10+08:00",
+  "notes": "## [0.3.0] - 2026-10-25\n\n### 新增\n\n- 升级清单 schema=2：`exe_urls` 多下载地址按序尝试（本站 302 签名直链优先，GitHub 直链兜底），单源失败自动降级到下一个。\n- 风控密码恢复码：设置 / 修改全局风控关闭密码时一次性签发恢复码，忘记密码可用恢复码重置（恢复码一次性、需立即离线保存）。\n- License Server 备份功能，及相关文档说明。\n- 每日用户配置备份：滚动保留 7 天，覆盖 License / 股票名缓存 / 自选历史 / 交易快照等用户配置文件。\n- 内置内存偏移新增 `hexin.exe` 2019,4,3,1 版本桶，并保留 `unknown` 兜底。\n- 离线实例展示与 WS / HTTP 端口占用检测。\n- 激活流程返回更多许可证元数据；设备指纹收集支持更多硬件因子。\n\n### 变更\n\n- 授权接入 awam-license-kit：请求改用 `X-Awam-*` 头（无 `/ths-linker` 前缀），授权服务统一由 kit 仓部署。\n- 发布脚本改用 `awam-release` CLI 生成与发布升级清单（latest.json 唯一写入口）。\n- 项目显示名称改为「智存同花顺联动」（UI 与文档）。\n- xiadan 下单实例缺失时拦截交易指令。\n- 风控开关三处入口状态同步（主界面 / 规则弹窗 / 告警悬浮窗）。\n- 严格模式下原生买卖按 xiadan pid 授权放行，避免误关快捷卖出浮层。\n- 持久化已验证偏移，优化版本管理。\n- 内存读码失效判定区分「同花顺已退出」与「偏移失效」，避免误弹重新探测引导。\n- Web Shell 接入单实例守卫，避免重复实例并发写配置。\n- 打包脚本按退出码判定原生命令成败（避免 EAP=Stop 把 stderr 误判为终止）。\n- 风控告警窗口尺寸调整以适应新布局。\n- 帮助页移除个人隐私邮箱、剔除冗余包。\n\n### 修复\n\n- 风控密码恢复码一次签发数量由 8 改为 1。"
 }
