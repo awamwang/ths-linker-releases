@@ -1,15 +1,15 @@
 {
   "schema": 2,
   "product": "ths-linker",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "channel": "stable",
   "exe_urls": [
-    "http://api.awam.wang/updates/ths-linker/download?version=0.3.0",
-    "https://github.com/awamwang/ths-linker-releases/releases/download/v0.3.0/ths-linker-v0.3.0.exe"
+    "http://api.awam.wang/updates/ths-linker/download?version=0.4.0",
+    "https://github.com/awamwang/ths-linker-releases/releases/download/v0.4.0/ths-linker-v0.4.0.exe"
   ],
-  "exe_url": "https://github.com/awamwang/ths-linker-releases/releases/download/v0.3.0/ths-linker-v0.3.0.exe",
-  "sha256": "63d48018e73d20500f1732821550dc0d4f3fa4e4a3f73d65af3d4613bfa49b16",
-  "size": 146309057,
-  "published_at": "2026-10-25T02:01:32+08:00",
-  "notes": "## [0.3.0] - 2026-10-25\n\n### 新增\n\n- 升级清单 schema=2：`exe_urls` 多下载地址按序尝试（本站 302 签名直链优先，GitHub 直链兜底），单源失败自动降级到下一个。\n- 风控密码恢复码：设置 / 修改全局风控关闭密码时一次性签发恢复码，忘记密码可用恢复码重置（恢复码一次性、需立即离线保存）。\n- License Server 备份功能，及相关文档说明。\n- 每日用户配置备份：滚动保留 7 天，覆盖 License / 股票名缓存 / 自选历史 / 交易快照等用户配置文件。\n- 内置内存偏移新增 `hexin.exe` 2019,4,3,1 版本桶，并保留 `unknown` 兜底。\n- 离线实例展示与 WS / HTTP 端口占用检测。\n- 激活流程返回更多许可证元数据；设备指纹收集支持更多硬件因子。\n\n### 变更\n\n- 授权接入 awam-license-kit：请求改用 `X-Awam-*` 头（无 `/ths-linker` 前缀），授权服务统一由 kit 仓部署。\n- 发布脚本改用 `awam-release` CLI 生成与发布升级清单（latest.json 唯一写入口）。\n- 项目显示名称改为「智存同花顺联动」（UI 与文档）。\n- xiadan 下单实例缺失时拦截交易指令。\n- 风控开关三处入口状态同步（主界面 / 规则弹窗 / 告警悬浮窗）。\n- 严格模式下原生买卖按 xiadan pid 授权放行，避免误关快捷卖出浮层。\n- 持久化已验证偏移，优化版本管理。\n- 内存读码失效判定区分「同花顺已退出」与「偏移失效」，避免误弹重新探测引导。\n- Web Shell 接入单实例守卫，避免重复实例并发写配置。\n- 打包脚本按退出码判定原生命令成败（避免 EAP=Stop 把 stderr 误判为终止）。\n- 风控告警窗口尺寸调整以适应新布局。\n- 帮助页移除个人隐私邮箱、剔除冗余包。\n\n### 修复\n\n- 风控密码恢复码一次签发数量由 8 改为 1。"
+  "exe_url": "https://github.com/awamwang/ths-linker-releases/releases/download/v0.4.0/ths-linker-v0.4.0.exe",
+  "sha256": "978aa010f2bf4d784d44adae7f53c7d756a5b26d4944ae655aca7ef531ac06ad",
+  "size": 103714234,
+  "published_at": "2026-11-03T16:05:43+08:00",
+  "notes": "## [0.4.0] - 2026-11-03\n\n### 新增\n\n- 订阅页支持选择套餐、确认机器码绑定后下单；可模拟支付并自动填入激活码。\n- 识别「终身」授权方案，按专业版能力解锁功能。\n- 同花顺自定义板块：`create_if_missing` 自动建板；静态板写入限制与覆盖历史恢复。\n- 交易：持仓列名别名、成本/市价/盈亏字段映射增强；easyths 2.x 英文字段；端口 connect 探测与环境缓存。\n- 开机自启命令可读可写；顶部每日金句词库与「不再展示」。\n- 打包：PDM + Python 3.12、项目内构建 venv、环境依赖冒烟与必备模块清单。\n\n### 变更\n\n- 授权客户端对齐最新授权 SDK（含购买客户端）；机器码生成由 SDK 提供。\n- 无控制台打包启动时日志 flush 更稳健；更新按钮防重复点击。\n- 开发壳与打包同源解释器，避免可选依赖缺失。\n\n### 修复\n\n- easyths 子进程占端口导致交易服务永不就绪。\n- 发布包缺偏移探测模块时引导恢复优雅降级，避免启动崩溃。\n- 若干 flaky 测试根因修复。\n\n<!-- 公开文案勿写服务地址、域名、API 路径、环境变量、端口等内部细节 -->"
 }

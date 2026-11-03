@@ -306,6 +306,11 @@
         <a href="#http-risk-control">风控接口</a>
       </div>
       <div class="group">
+        <div class="group-title">MCP</div>
+        <a href="#mcp-overview">说明与地址</a>
+        <a href="#mcp-tools">工具一览</a>
+      </div>
+      <div class="group">
         <div class="group-title">工具</div>
         <a href="#playground">接口测试</a>
       </div>
@@ -351,7 +356,11 @@
             </tr>
             <tr>
               <td>经 HTTP 接口读写自选股等</td>
-              <td>「设置 → HTTP 接口」勾选启用（需 Pro）→（可选）配置 <code>http_api_key</code>（见 <a class="index-link" href="#auth">鉴权</a>）→ 见 <a class="index-link" href="#http-overview">HTTP 说明</a>。软件内「自选股」标签维护为基础版能力；写入需在实例页配置云端账号。</td>
+              <td>「设置 → HTTP / MCP」勾选「启用 HTTP 接口」（需 Pro）→（可选）配置 <code>http_api_key</code>（见 <a class="index-link" href="#auth">鉴权</a>）→ 见 <a class="index-link" href="#http-overview">HTTP 说明</a>。软件内「自选股」标签维护为基础版能力；写入需在实例页配置云端账号。</td>
+            </tr>
+            <tr>
+              <td>给 AI 客户端（Cursor / Claude Desktop 等）接 MCP</td>
+              <td>「设置 → HTTP / MCP」勾选「启用 MCP」（需 Pro，与 HTTP 同属授权）→ 复制 SSE 或 Streamable 地址 → 见 <a class="index-link" href="#mcp-overview">MCP 说明</a>。MCP <strong>不替代</strong> HTTP / WebSocket；脚本对接仍优先用后两者。</td>
             </tr>
             <tr>
               <td>查询板块 / 热点主题 / 匹配个股所属板块</td>
@@ -359,7 +368,7 @@
             </tr>
             <tr>
               <td>向自定义板块添加成分股</td>
-              <td>先在同花顺客户端<strong>新建</strong>自定义板块（至少含 1 只股票），再在「板块」标签点「添加成分股…」，或调用 HTTP / WS <code>add_stocks</code>。仅支持已有板块追加/覆盖成分，不支持新建 / 删除 / 重命名。写入后请在同花顺中刷新或重启后再查看。</td>
+              <td>向<strong>静态</strong>自定义板块追加/覆盖成分：界面「添加成分股…」，或 HTTP / WS <code>add_stocks</code>。传 <code>create_if_missing</code> 时可自动新建（优先复用空槽）。覆盖成功后自动备份，可用 <code>history</code> / <code>restore</code> 回滚。不支持删除 / 重命名，也不写入动态板块。写入后请在同花顺中刷新或重启后再查看。</td>
             </tr>
             <tr>
               <td>与通达信自定义板块按方向同步</td>
@@ -386,8 +395,8 @@
               <td>「设置 → 基本配置」或实例「股票代码获取」：间隔默认 0.3 秒；连接类型默认「内存」，可改「日志」。</td>
             </tr>
             <tr>
-              <td>修改 WebSocket / HTTP 端口</td>
-              <td>「设置 → 实时推送 / HTTP 接口」→ 启用后修改端口并复制链接地址。</td>
+              <td>修改 WebSocket / HTTP / MCP 端口</td>
+              <td>「设置 → 实时推送 / HTTP / MCP」→ 启用后修改端口并复制链接地址。MCP 默认 <code>8768</code>，且仅绑定本机回环。</td>
             </tr>
             <tr>
               <td>配置自选股云端写入账号</td>
@@ -402,8 +411,8 @@
               <td>「设置 → 基本配置」→ 勾选开机自启。</td>
             </tr>
             <tr>
-              <td>激活 Pro（HTTP / 交易 / 板块等）</td>
-              <td>「订阅」页输入激活码或 Mock 购买。WebSocket 股票推送/改码在源码侧为免费能力，仍须在设置中启用并启动。</td>
+              <td>激活 Pro（HTTP / MCP / 交易 / 板块等）</td>
+              <td>「订阅」页输入激活码或 Mock 购买。WebSocket 股票推送/改码在源码侧为免费能力，仍须在设置中启用并启动。MCP 启服与 HTTP 同属 Pro。</td>
             </tr>
             <tr>
               <td>同目录开了多个同花顺窗口，代码一样？</td>
@@ -582,8 +591,12 @@
               <td>勾选「启用实时推送」后显示端口与链接，默认 <code>ws://127.0.0.1:8765</code>。监听模式：本机 / 局域网 / 自定义 IP（与 HTTP 共用）。</td>
             </tr>
             <tr>
-              <td>HTTP 接口</td>
-              <td>勾选「启用 HTTP 接口」后显示端口与地址，默认 <code>http://127.0.0.1:8766</code>（Pro）。<code>http_api_key</code> 可选；未配置时第三方可无 token 调用（见 <a class="index-link" href="#auth">接口鉴权</a>）。</td>
+              <td>HTTP / MCP 接口</td>
+              <td>
+                <strong>HTTP</strong>：勾选「启用 HTTP 接口」后显示端口与地址，默认 <code>http://127.0.0.1:8766</code>（Pro）；监听模式与实时推送共用。<br />
+                <strong>MCP</strong>：勾选「启用 MCP」后显示端口与 SSE / Streamable 链接，默认 <code>http://127.0.0.1:8768</code>（Pro，与 HTTP 同属授权）；<strong>仅绑定本机</strong> <code>127.0.0.1</code>，不受局域网监听模式影响。可选「允许自选写入」；默认无买卖下单工具。详见 <a class="index-link" href="#mcp-overview">MCP 说明</a>。<br />
+                <code>http_api_key</code> 可选，同时作用于业务 HTTP / WebSocket / MCP；未配置时第三方可无 token 调用（见 <a class="index-link" href="#auth">接口鉴权</a>）。
+              </td>
             </tr>
             <tr>
               <td>风控密码</td>
@@ -607,40 +620,43 @@
 
       <section id="auth">
         <h2>接口鉴权</h2>
-        <p>集成密钥 <code>http_api_key</code> <strong>不是必须的</strong>：界面未配置时，启动服务后第三方可无 token 连接 WebSocket / 调用业务 HTTP。若在设置中写入了密钥，则对外对接须带凭证。Web UI 的 Control Plane（设置 / 运行时等）仍使用进程级会话令牌，与对外集成密钥相互独立。</p>
+        <p>集成密钥 <code>http_api_key</code> <strong>不是必须的</strong>：界面未配置时，启动服务后第三方可无 token 连接 WebSocket / 调用业务 HTTP / 连接 MCP。若在设置中写入了密钥，则对外对接须带凭证。Web UI 的 Control Plane（设置 / 运行时等）仍使用进程级会话令牌，与对外集成密钥相互独立。</p>
         <table>
           <thead><tr><th>项</th><th>说明</th></tr></thead>
           <tbody>
             <tr>
               <td>公开路径</td>
-              <td><code>GET /health</code> 与静态文档/Web UI 资源免鉴权。</td>
+              <td>HTTP <code>GET /health</code>、MCP <code>GET /health</code>，以及静态文档/Web UI 资源免鉴权。</td>
             </tr>
             <tr>
               <td>会话令牌 <code>session_token</code></td>
-              <td>进程内存生成，经 Shell Bridge 注入 Web UI，保护 Control Plane（<code>/settings</code>、<code>/runtime</code> 等）。外部无法稳定获取；<strong>不</strong>单独用来锁死对外业务 HTTP / WebSocket。</td>
+              <td>进程内存生成，经 Shell Bridge 注入 Web UI，保护 Control Plane（<code>/settings</code>、<code>/runtime</code> 等）。外部无法稳定获取；<strong>不</strong>单独用来锁死对外业务 HTTP / WebSocket / MCP。</td>
             </tr>
             <tr>
               <td>集成密钥 <code>http_api_key</code>（可选）</td>
-              <td>在设置或 <code>~/.ths-linker/linker_config.json</code> 写入后生效。配置后：业务 HTTP 用 <code>Authorization: Bearer &lt;http_api_key&gt;</code>；WebSocket 用 <code>?token=</code> 或 Bearer。HTTP 业务接口另需 Pro（<code>FEATURE_HTTP_API</code>）。</td>
+              <td>在设置或 <code>~/.ths-linker/linker_config.json</code> 写入后生效。配置后：业务 HTTP / MCP 用 <code>Authorization: Bearer &lt;http_api_key&gt;</code>（MCP 亦支持 <code>?token=</code>）；WebSocket 用 <code>?token=</code> 或 Bearer。HTTP / MCP 启服另需 Pro（<code>FEATURE_HTTP_API</code>）。</td>
             </tr>
             <tr>
-              <td>WebSocket / 业务 HTTP</td>
+              <td>WebSocket / 业务 HTTP / MCP</td>
               <td><strong>未配置</strong> <code>http_api_key</code>：可无 token 连接与调用。<strong>已配置</strong>：握手/请求须带凭证（session 或集成密钥均可）。集成密钥握手不额外强制 Pro；各消息仍按功能授权门控。</td>
             </tr>
             <tr>
               <td>失败响应</td>
-              <td>HTTP <strong>401</strong>：<code>{"ok":false,"error":"…","auth_required":true}</code>；集成密钥缺 Pro 时可能另含 <code>license_required:true</code>。</td>
+              <td>HTTP / MCP <strong>401</strong>：<code>{"ok":false,"error":"…","auth_required":true}</code>；集成密钥缺 Pro 时可能另含 <code>license_required:true</code>。</td>
             </tr>
           </tbody>
         </table>
         <pre># 未配置 http_api_key 时可直接调用
 curl http://127.0.0.1:8766/stock-code/get
 ws://127.0.0.1:8765
+curl http://127.0.0.1:8768/health
 
 # 配置了 http_api_key 后须带凭证
 curl -H "Authorization: Bearer YOUR_HTTP_API_KEY" http://127.0.0.1:8766/stock-code/get
-ws://127.0.0.1:8765/?token=YOUR_HTTP_API_KEY</pre>
-        <div class="note">业务 License（交易 / 板块 / HTTP 启服等）与本鉴权正交：通过鉴权后仍可能因未激活 Pro 返回 <code>license_required</code>。自选股维护为基础版能力。</div>
+ws://127.0.0.1:8765/?token=YOUR_HTTP_API_KEY
+# MCP（SSE 示例）：Header 或 ?token=
+http://127.0.0.1:8768/sse?token=YOUR_HTTP_API_KEY</pre>
+        <div class="note">业务 License（交易 / 板块 / HTTP·MCP 启服等）与本鉴权正交：通过鉴权后仍可能因未激活 Pro 返回 <code>license_required</code>。自选股维护为基础版能力。</div>
       </section>
 
       <section id="ws-overview">
@@ -965,15 +981,17 @@ ws://127.0.0.1:8765/?token=YOUR_HTTP_API_KEY</pre>
         <table>
           <thead><tr><th>字段</th><th>必填</th><th>说明</th></tr></thead>
           <tbody>
-            <tr><td><code>action</code></td><td>是</td><td><code>list</code> / <code>tree</code> / <code>add_stocks</code>（别名 <code>add-stocks</code>）</td></tr>
+            <tr><td><code>action</code></td><td>是</td><td><code>list</code> / <code>tree</code> / <code>add_stocks</code>（别名 <code>add-stocks</code>）/ <code>history</code> / <code>restore</code></td></tr>
             <tr><td><code>kind</code></td><td>list/tree 时</td><td><code>custom</code> / <code>conception</code> / <code>industry</code> / <code>region</code> / <code>daily</code>（及中文别名）；tree 仅前三者中的概念/行业/地域</td></tr>
-            <tr><td><code>block_name</code></td><td>add_stocks 时</td><td>自定义板块显示名（完全匹配）；板块须已在同花顺客户端创建</td></tr>
-            <tr><td><code>items</code></td><td>add_stocks 时</td><td>hit-list：<code>kind:"hit"</code> + <code>code</code>；兼容旧字段 <code>stocks</code>；仅 A 股，无法映射的进入 <code>skipped_codes</code></td></tr>
-            <tr><td><code>overwrite</code></td><td>否</td><td><code>true</code> 覆盖成分，默认 <code>false</code> 追加去重</td></tr>
+            <tr><td><code>block_name</code></td><td>add_stocks 时</td><td>静态自定义板块显示名（完全匹配）</td></tr>
+            <tr><td><code>items</code></td><td>add_stocks 时</td><td>hit-list：<code>kind:"hit"</code> + <code>code</code>；兼容旧字段 <code>stocks</code>；仅 A 股，无法映射的进入 <code>skipped_codes</code>；<code>create_if_missing</code> 建空板时可为空</td></tr>
+            <tr><td><code>overwrite</code></td><td>否</td><td><code>true</code> 覆盖成分（成功后写入历史快照），默认 <code>false</code> 追加去重</td></tr>
+            <tr><td><code>create_if_missing</code></td><td>否</td><td><code>true</code> 时板块不存在则自动新建（空槽优先）</td></tr>
+            <tr><td><code>id</code></td><td>restore 时</td><td>覆盖历史快照 ID（也可用 <code>snapshot_id</code>）</td></tr>
             <tr><td><code>ths_dir</code></td><td>否</td><td>同花顺安装目录；省略时用服务配置或运行中的 hexin</td></tr>
           </tbody>
         </table>
-        <p>服务端回复 <code>ths_block_result</code>。写入后请在同花顺客户端刷新或重启再查看。<strong>不支持</strong>新建 / 删除 / 重命名板块。</p>
+        <p>服务端回复 <code>ths_block_result</code>。仅支持<strong>静态</strong>自定义板块写入；写入后请在同花顺客户端刷新或重启再查看。不支持删除 / 重命名，也不写入动态板块。</p>
         <p class="muted">以下指令与 HTTP 对应；完整字段见仓库 <code>docs/同花顺热点主题接口.md</code>、<code>docs/同花顺股票列表接口.md</code>。</p>
 
         <h3 id="ws-cmd-ths-theme"><code>ths_theme</code> — 热点主题（Pro）</h3>
@@ -1088,7 +1106,7 @@ ws://127.0.0.1:8765/?token=YOUR_HTTP_API_KEY</pre>
         <div class="note">
           本节描述的是本软件对外暴露的<strong>公共 HTTP API</strong>，供外部程序读写自选股、联动股票、查询交易与风控等。若需配合软件做定制开发或集成方案，请联系开发者：待添加。
         </div>
-        <p>使用前：「设置 → HTTP 接口」勾选启用 →（可选）配置 <code>http_api_key</code>（见鉴权）→ 状态栏点击「启动」。默认地址：</p>
+        <p>使用前：「设置 → HTTP / MCP」勾选「启用 HTTP 接口」→（可选）配置 <code>http_api_key</code>（见鉴权）→ 状态栏点击「启动」。默认地址：</p>
         <pre>http://127.0.0.1:8766</pre>
         <p>默认绑定本机 <code>127.0.0.1</code>；可在设置中改为局域网（绑定 <code>0.0.0.0</code>）或自定义 IPv4。响应均为 JSON，字段含 <code>ok</code>；失败时带 <code>error</code>（可能含 <code>license_required</code> / <code>auth_required</code>）。支持 CORS。未配置 <code>http_api_key</code> 时业务接口可无 token 调用；已配置时须带 <code>Authorization: Bearer &lt;http_api_key&gt;</code>（见 <a class="index-link" href="#auth">接口鉴权</a>）。</p>
         <ul>
@@ -1100,7 +1118,7 @@ ws://127.0.0.1:8765/?token=YOUR_HTTP_API_KEY</pre>
           <li><strong>交易</strong>：经 easyths 操作 xiadan（需 Pro 与本机交易依赖）。</li>
           <li><strong>风控</strong>：读写实例级交易风控配置，与界面风控设置共用文件。</li>
         </ul>
-        <p class="muted">启服 HTTP 需 Pro。WebSocket 股票联动在源码侧免费，但界面仍须勾选启用。接口调试可使用本文底部 <a class="index-link" href="#playground">接口测试</a>（若已配置 API Key 请填写）。</p>
+        <p class="muted">启服 HTTP 需 Pro。WebSocket 股票联动在源码侧免费，但界面仍须勾选启用。面向 AI 客户端还可选启 <a class="index-link" href="#mcp-overview">MCP</a>（不替代本 HTTP）。接口调试可使用本文底部 <a class="index-link" href="#playground">接口测试</a>（若已配置 API Key 请填写）。</p>
       </section>
 
       <section id="http-endpoints">
@@ -1122,7 +1140,9 @@ ws://127.0.0.1:8765/?token=YOUR_HTTP_API_KEY</pre>
             <tr><td><code>GET</code></td><td><code>/ths-block</code>、<code>/ths-block/list</code></td><td>扁平板块映射；查询参数 <code>kind</code>（必填）、可选 <code>ths_dir</code></td></tr>
             <tr><td><code>GET</code></td><td><code>/ths-block/tree</code></td><td>概念 / 行业 / 地域层级树</td></tr>
             <tr><td><code>GET</code> / <code>POST</code></td><td><code>/ths-block/export</code>、<code>/ths-block/refresh</code>、<code>/ths-block/status</code>、<code>/ths-block/match</code></td><td>导出（可选类型含「热点主题」）、刷新缓存、状态、个股匹配板块</td></tr>
-            <tr><td><code>POST</code></td><td><code>/ths-block/add-stocks</code></td><td>向已有自定义板块追加/覆盖成分；body 见 <a class="index-link" href="#http-ths-block">板块接口</a></td></tr>
+            <tr><td><code>POST</code></td><td><code>/ths-block/add-stocks</code></td><td>向已有<strong>静态</strong>自定义板块追加/覆盖成分；body 见 <a class="index-link" href="#http-ths-block">板块接口</a></td></tr>
+            <tr><td><code>GET</code></td><td><code>/ths-block/history</code></td><td>自定义板块覆盖历史快照列表（供恢复）</td></tr>
+            <tr><td><code>POST</code></td><td><code>/ths-block/restore</code></td><td>从覆盖历史快照恢复成分；body: <code>{"id":"…"}</code></td></tr>
             <tr><td><code>GET</code></td><td><code>/tdx-block</code>、<code>/tdx-block/list</code></td><td>列出通达信自定义板块；见 <a class="index-link" href="#http-tdx-block">通达信板块</a></td></tr>
             <tr><td><code>POST</code></td><td><code>/tdx-block/sync-to-ths</code>、<code>/tdx-block/sync-to-tdx</code></td><td>通达信 ↔ 同花顺自定义板块整表同步</td></tr>
             <tr><td><code>GET</code> / <code>POST</code></td><td><code>/tdx-block/self-stock-status</code></td><td>通达信自选股同步状态（计数）</td></tr>
@@ -1174,7 +1194,7 @@ GET /ths-block/tree?kind=conception</pre>
         <p><code>list</code> 返回 <code>blocks</code>（ID → 名称 / <code>stock_ids</code> 等）；自定义板块还可含 <code>custom_type</code>、颜色字段。<code>tree</code> 返回递归 <code>tree</code> 节点。</p>
 
         <h3>写入成分 <code>add-stocks</code></h3>
-        <p>仅更新<strong>已有</strong>自定义板块文件中的成分列表；板块须先在同花顺客户端创建（至少含 1 只股票）。不支持新建 / 删除 / 重命名。</p>
+        <p>写入<strong>静态</strong>自定义板块成分；可选 <code>create_if_missing: true</code> 自动新建（空槽优先，否则新 ID）。不支持删除 / 重命名，也不写入动态板块。<code>overwrite: true</code> 成功后会自动备份覆盖前成分。</p>
         <pre>POST /ths-block/add-stocks
 Content-Type: application/json
 
@@ -1189,14 +1209,23 @@ Content-Type: application/json
         <table>
           <thead><tr><th>字段</th><th>说明</th></tr></thead>
           <tbody>
-            <tr><td><code>block_name</code></td><td>自定义板块显示名（完全匹配）</td></tr>
+            <tr><td><code>block_name</code></td><td>静态自定义板块显示名（完全匹配）</td></tr>
             <tr><td><code>items</code></td><td>hit-list：写入 <code>kind:"hit"</code> 项的 <code>code</code>；标题行等跳过。兼容旧字段 <code>stocks</code></td></tr>
-            <tr><td><code>overwrite</code></td><td>默认 <code>false</code> 追加去重；<code>true</code> 清空后覆盖</td></tr>
+            <tr><td><code>overwrite</code></td><td>默认 <code>false</code> 追加去重；<code>true</code> 清空后覆盖并写入历史快照</td></tr>
+            <tr><td><code>create_if_missing</code></td><td>默认 <code>false</code>；<code>true</code> 时不存在则自动新建</td></tr>
             <tr><td><code>ths_dir</code></td><td>可选</td></tr>
           </tbody>
         </table>
-        <p>成功响应含 <code>block_id</code>、<code>before_count</code> / <code>after_count</code>、<code>added_count</code>、<code>stock_ids</code>、<code>skipped_codes</code> 等。写入后请在同花顺中刷新或重启后再查看。</p>
-        <div class="note">「板块」标签提供相同能力：刷新缓存、导出 JSON、「添加成分股…」、通达信同步。写入会改动本地自定义板块文件，测试时请谨慎。</div>
+        <p>成功响应含 <code>block_id</code>、<code>created</code>、<code>before_count</code> / <code>after_count</code>、<code>added_count</code>、<code>stock_ids</code>、<code>skipped_codes</code>；覆盖时还可含 <code>history</code>。写入后请在同花顺中刷新或重启后再查看。</p>
+
+        <h3>覆盖历史 <code>history</code> / <code>restore</code></h3>
+        <pre>GET /ths-block/history
+POST /ths-block/restore
+Content-Type: application/json
+
+{ "id": "快照ID" }</pre>
+        <p><code>history</code> 返回最近最多 7 条覆盖快照摘要；<code>restore</code> 按快照把对应静态板块成分写回，并再次备份恢复前状态。</p>
+        <div class="note">「板块」标签提供相同写入能力：刷新缓存、导出 JSON、「添加成分股…」、通达信同步。写入会改动本地自定义板块文件，测试时请谨慎。</div>
       </section>
 
       <section id="http-tdx-block">
@@ -1380,9 +1409,82 @@ Content-Type: application/json
         </table>
       </section>
 
+      <section id="mcp-overview">
+        <h2>MCP 说明与地址</h2>
+        <div class="note">
+          MCP（Model Context Protocol）是给 <strong>AI 客户端</strong>（如 Cursor、Claude Desktop）调用的本机可选桥接层：把现有联动能力封装成 tools，方便自然语言驱动查询与改码。
+          <strong>不替代</strong> WebSocket / HTTP：脚本、网页与自研工具请继续用后两者；需要实时推送时仍用 WebSocket。
+        </div>
+        <p>使用前：「设置 → HTTP / MCP」勾选「启用 MCP」（需 Pro，与 HTTP 启服同属授权）→ 状态栏确保软件已「启动」→ 复制 SSE 或 Streamable 地址到客户端配置。默认仅绑定本机：</p>
+        <pre># 健康检查（免鉴权）
+http://127.0.0.1:8768/health
+
+# SSE（经典 MCP over HTTP）
+http://127.0.0.1:8768/sse
+
+# Streamable HTTP
+http://127.0.0.1:8768/mcp</pre>
+        <table>
+          <thead><tr><th>项</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>绑定</td>
+              <td>固定 <code>127.0.0.1</code>，不受「监听模式 / 局域网」影响，降低误暴露面。</td>
+            </tr>
+            <tr>
+              <td>默认端口</td>
+              <td><code>8768</code>（可在设置中修改；勿与 Vite 开发服常用的 <code>8767</code> 混淆）。</td>
+            </tr>
+            <tr>
+              <td>传输</td>
+              <td>默认同时提供 SSE 与 Streamable HTTP；可在设置中改为仅 SSE 或仅 Streamable。</td>
+            </tr>
+            <tr>
+              <td>鉴权</td>
+              <td>与 HTTP / WebSocket 共用可选 <code>http_api_key</code>。已配置时 MCP 请求须带 <code>Authorization: Bearer …</code> 或 <code>?token=</code>；<code>/health</code> 免鉴权。见 <a class="index-link" href="#auth">接口鉴权</a>。</td>
+            </tr>
+            <tr>
+              <td>写操作</td>
+              <td>默认只读 + 改码跳转（<code>post_stock_code</code>），<strong>不含买卖下单</strong>。勾选「允许自选写入」后才注册自选股增删覆盖类 tools。</td>
+            </tr>
+            <tr>
+              <td>命令行</td>
+              <td>亦可独立启动：<code>python -m ths_linker mcp</code>（参数见软件帮助；端口 / 传输 / API Key / 允许写入等）。</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="note">业务字段与 HTTP / WebSocket 同源（同一套 execute 逻辑）。板块、交易只读等仍受各自 Pro / 依赖门控；未激活时工具返回中可能含 <code>license_required</code>。</div>
+      </section>
+
+      <section id="mcp-tools">
+        <h2>MCP 工具一览</h2>
+        <p>下列为默认注册的 tools（名称以实际连接后客户端列出的为准）。开启「允许自选写入」后追加写入类工具。</p>
+        <table>
+          <thead><tr><th>工具名</th><th>说明</th><th>对应能力</th></tr></thead>
+          <tbody>
+            <tr><td><code>health</code></td><td>服务自检</td><td>—</td></tr>
+            <tr><td><code>get_stock_code</code></td><td>读取当前选中股票与实例快照</td><td>WS/HTTP <code>stock_code</code> get</td></tr>
+            <tr><td><code>post_stock_code</code></td><td>向同花顺跳转 / 改码（非下单）</td><td>WS/HTTP <code>stock_code</code> post</td></tr>
+            <tr><td><code>list_self_stock</code></td><td>列出「我的自选」</td><td>HTTP <code>/self-stock</code></td></tr>
+            <tr><td><code>list_ths_block</code> / <code>tree_ths_block</code> / <code>status_ths_block</code></td><td>板块映射 / 树 / 状态</td><td>HTTP <code>/ths-block/*</code></td></tr>
+            <tr><td><code>list_ths_theme</code> / <code>tree_ths_theme</code> / <code>stocks_ths_theme</code> / <code>full_ths_theme</code></td><td>热点主题只读</td><td>HTTP <code>/ths-theme/*</code></td></tr>
+            <tr><td><code>list_ths_stock_list</code></td><td>本地 A 股列表</td><td>HTTP <code>/ths-stock-list</code></td></tr>
+            <tr><td><code>trade_probe</code> / <code>trade_snapshot</code> / <code>trade_funds</code> / <code>trade_holdings</code></td><td>交易环境与资金持仓只读</td><td>HTTP <code>/trade/*</code>（无 buy/sell）</td></tr>
+            <tr><td><code>get_risk_control</code></td><td>读取实例风控配置</td><td>HTTP <code>/risk-control</code></td></tr>
+            <tr><td><code>add_self_stock</code> / <code>remove_self_stock</code> / <code>replace_self_stock</code></td><td>自选写入（须开启「允许自选写入」）</td><td>HTTP <code>/self-stock/add|remove|replace</code></td></tr>
+          </tbody>
+        </table>
+        <h3>通道怎么选</h3>
+        <ul>
+          <li><strong>要实时推送</strong>（选中股变化、实例变化、持仓缓存变化）→ WebSocket。</li>
+          <li><strong>脚本 / 自研一次性调用</strong> → HTTP JSON。</li>
+          <li><strong>AI Agent 自然语言调用</strong> → MCP（本页）。</li>
+        </ul>
+      </section>
+
       <section id="playground">
         <h2>接口测试</h2>
-        <p>在软件已<strong>启动</strong>且对应服务已在「设置」中启用时，可直接在本页发起请求验证接口。HTTP 默认 <code>http://127.0.0.1:8766</code>，WebSocket 默认 <code>ws://127.0.0.1:8765</code>。仅当软件中配置了 <code>http_api_key</code> 时才需填写下方 API Key；未配置时可留空。</p>
+        <p>在软件已<strong>启动</strong>且对应服务已在「设置」中启用时，可直接在本页发起请求验证接口。HTTP 默认 <code>http://127.0.0.1:8766</code>，WebSocket 默认 <code>ws://127.0.0.1:8765</code>。MCP 请用客户端连接 <code>http://127.0.0.1:8768/sse</code> 或 <code>/mcp</code>（本页不提供 MCP 会话测试）。仅当软件中配置了 <code>http_api_key</code> 时才需填写下方 API Key；未配置时可留空。</p>
 
         <h3>HTTP 测试</h3>
         <div class="playground" id="http-playground">
