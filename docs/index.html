@@ -1037,9 +1037,10 @@ http://127.0.0.1:8768/sse?token=YOUR_HTTP_API_KEY</pre>
         <table>
           <thead><tr><th>字段</th><th>必填</th><th>说明</th></tr></thead>
           <tbody>
-            <tr><td><code>action</code></td><td>是</td><td><code>probe</code> / <code>snapshot</code> / <code>funds</code> / <code>holdings</code> / <code>clipboard_check</code> / <code>buy</code> / <code>sell</code></td></tr>
+            <tr><td><code>action</code></td><td>是</td><td><code>probe</code> / <code>snapshot</code> / <code>funds</code> / <code>holdings</code> / <code>clipboard_check</code> / <code>history_trades</code> / <code>delivery_orders</code> / <code>buy</code> / <code>sell</code></td></tr>
             <tr><td><code>ths_dir</code></td><td>除 probe 外通常必填</td><td>同花顺安装目录，用于定位 xiadan</td></tr>
             <tr><td><code>code</code> / <code>price</code> / <code>quantity</code></td><td>buy/sell 时</td><td>6 位代码、限价、股数（须 &gt; 0）</td></tr>
+            <tr><td><code>start_date</code> / <code>end_date</code> / <code>format</code> / <code>output_path</code></td><td>history_trades / delivery_orders 时可选</td><td>查询区间（默认 2019-01-01 至今）、<code>csv</code>/<code>json</code>、导出路径（默认 <code>~/easyths/exports/历史成交-&lt;起&gt;-&lt;止&gt;.csv</code> 或 <code>交割单-&lt;起&gt;-&lt;止&gt;.csv</code>，文件名用界面页面名 + 时间范围）；另有 <code>page</code>（<code>history</code> / <code>delivery</code>，可显式切换页面）、<code>code</code>、<code>only_trades</code>、<code>include_rows</code>、<code>hwnd</code></td></tr>
             <tr><td><code>host</code> / <code>port</code> / <code>api_key</code> / <code>timeout</code></td><td>否</td><td>覆盖全局 easyths 连接参数；<code>port</code> 也可按实例 <code>trade_port</code> 解析</td></tr>
             <tr><td><code>pid</code> / <code>hwnd</code> / <code>xiadan_path</code></td><td>否</td><td>精确定位交易窗口或 xiadan 可执行文件</td></tr>
           </tbody>
@@ -1077,7 +1078,7 @@ http://127.0.0.1:8768/sse?token=YOUR_HTTP_API_KEY</pre>
             <tr><td><code>position_slack_pct</code></td><td>否</td><td>仓位宽限（0–10，默认 3）：总仓与单票上限各自叠加后再做拦截判定</td></tr>
             <tr><td><code>market_prompts</code> / <code>stock_buy_prompts</code> / <code>sell_prompts</code></td><td>否</td><td>提示词数组；买入拦截时展示市场 + 单票提示，卖出时在结果中带卖出提示</td></tr>
             <tr><td><code>sell_block_prompts</code> / <code>stock_sell_prompts</code> / <code>stock_sell_block_prompts</code></td><td>否</td><td>卖出相关：全局卖出禁止（拦截）、单票卖出提示（不拦截）、单票卖出禁止（拦截）；单票格式 <code>代码: 提示1,提示2</code></td></tr>
-            <tr><td><code>strict_mode</code></td><td>否</td><td>严格模式（默认关）：开启后同花顺买卖浮层只在本软件授权调用（键盘精灵唤起前后台内）放行，手动点击 / 快捷键唤起的弹窗会被关闭并告警；关闭后任何情况都不拦截买卖弹窗</td></tr>
+            <tr><td><code>strict_mode</code></td><td>否</td><td>严格模式（默认关）：开启后额外拦截非本软件授权唤起的买卖浮层（手动点击 / 快捷键）；关闭后不再做「未授权一律关窗」，但全局禁买、卖出禁止、已超仓等规则仍会关窗并告警</td></tr>
             <tr><td><code>buy_tips</code> / <code>sell_tips</code></td><td>否</td><td>原生买卖前逐条确认的提示（条目 <code>{text, enabled}</code>，可空）；受 <code>trade_tips_enabled</code> 总开关控制</td></tr>
             <tr><td><code>trade_tips_enabled</code></td><td>否</td><td>买卖提示总开关，独立于风控规则开关</td></tr>
             <tr><td><code>global_no_buy</code></td><td>否</td><td>全局禁止买入；开启后拦截全部买入，优先级高于仓位上限与买入提示词</td></tr>
@@ -1153,6 +1154,8 @@ http://127.0.0.1:8768/sse?token=YOUR_HTTP_API_KEY</pre>
             <tr><td><code>GET</code></td><td><code>/short-genius</code>、<code>/short-genius/config</code>、<code>/short-genius/accounts</code>、<code>/short-genius/excel</code></td><td>短线精灵配置只读</td></tr>
             <tr><td><code>GET</code></td><td><code>/trade/probe</code></td><td>探测 xiadan 与 easyths 连通性</td></tr>
             <tr><td><code>GET</code></td><td><code>/trade/snapshot</code>、<code>/trade/funds</code>、<code>/trade/holdings</code>、<code>/trade/clipboard-check</code></td><td>账户快照 / 资金 / 持仓 / 剪贴板自检；通常需 <code>ths_dir</code></td></tr>
+            <tr><td><code>GET</code> / <code>POST</code></td><td><code>/trade/history</code>、<code>/trade/history/export</code></td><td>从 xiadan「历史成交」页全量导出逐笔成交为 CSV/JSON；会切换交易窗口菜单并占用剪贴板（结束自动恢复），复制时弹出的验证码由 easyths ONNX 模型自动识别</td></tr>
+            <tr><td><code>GET</code> / <code>POST</code></td><td><code>/trade/delivery</code>、<code>/trade/delivery/export</code></td><td>从 xiadan「交割单」页全量导出结算流水为 CSV/JSON（27 列）；含手续费、印花税、其他杂费、发生金额、资金余额等真实费用，以及银行转账 / 基金申赎 / 红利税等资金流水。参数与 <code>/trade/history</code> 一致</td></tr>
             <tr><td><code>GET</code> / <code>POST</code></td><td><code>/trade/prepare</code>、<code>/trade/ensure</code>、<code>/trade/recover</code></td><td>交易准备、确保服务、端口恢复</td></tr>
             <tr><td><code>POST</code></td><td><code>/trade/buy</code>、<code>/trade/sell</code></td><td>限价买入/卖出；body 含 <code>ths_dir</code>、<code>code</code>、<code>price</code>、<code>quantity</code></td></tr>
             <tr><td><code>GET</code></td><td><code>/risk-control</code>、<code>/risk-control/get</code></td><td>读取风控配置；查询参数 <code>ths_dir</code>、可选 <code>title</code> / <code>pid</code></td></tr>
@@ -1356,7 +1359,7 @@ Content-Type: application/json
             <tr><td><code>sell_block_prompts</code></td><td>卖出禁止提示词（全局，拦截且不可跳过）</td></tr>
             <tr><td><code>stock_sell_prompts</code></td><td>单票卖出提示词（不拦截）；格式 <code>代码: 提示1,提示2</code></td></tr>
             <tr><td><code>stock_sell_block_prompts</code></td><td>单票卖出禁止提示词（拦截）</td></tr>
-            <tr><td><code>strict_mode</code></td><td>严格模式：开启后同花顺买卖浮层仅本软件授权调用时放行，手动唤起立即关闭并告警；关闭后任何情况不拦截（默认关）</td></tr>
+            <tr><td><code>strict_mode</code></td><td>严格模式（默认关）：开启后额外拦截非本软件授权唤起的买卖浮层；关闭后禁买/禁卖等规则仍生效</td></tr>
             <tr><td><code>buy_tips</code> / <code>sell_tips</code></td><td>原生买卖前逐条确认的提示（<code>{text, enabled}</code>）；受 <code>trade_tips_enabled</code> 控制</td></tr>
             <tr><td><code>trade_tips_enabled</code></td><td>买卖提示总开关，独立于风控规则开关</td></tr>
             <tr><td><code>global_no_buy</code></td><td>全局禁止买入开关；开启后拦截全部买入，优先于仓位上限与买入提示词</td></tr>
@@ -1609,6 +1612,8 @@ http://127.0.0.1:8768/mcp</pre>
     { label: "GET /trade/funds", method: "GET", path: "/trade/funds", query: "ths_dir=C:\\同花顺", body: "" },
     { label: "GET /trade/holdings", method: "GET", path: "/trade/holdings", query: "ths_dir=C:\\同花顺", body: "" },
     { label: "GET /trade/clipboard-check", method: "GET", path: "/trade/clipboard-check", query: "ths_dir=C:\\同花顺", body: "" },
+    { label: "GET /trade/history", method: "GET", path: "/trade/history", query: "start_date=2019-01-01&format=csv", body: "" },
+    { label: "GET /trade/delivery", method: "GET", path: "/trade/delivery", query: "start_date=2019-01-01&format=csv", body: "" },
     { label: "POST /trade/buy", method: "POST", path: "/trade/buy", query: "", body: '{"ths_dir":"C:\\\\同花顺","code":"600519","price":100,"quantity":100}' },
     { label: "POST /trade/sell", method: "POST", path: "/trade/sell", query: "", body: '{"ths_dir":"C:\\\\同花顺","code":"600519","price":100,"quantity":100}' },
     { label: "GET /risk-control", method: "GET", path: "/risk-control", query: "ths_dir=C:\\同花顺", body: "" },
